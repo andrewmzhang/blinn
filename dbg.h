@@ -1,9 +1,9 @@
 #ifndef __dbg_h__
-#define __dbg_h
+#define __dbg_h__
 
 #include <stdio.h>
-#include <errno.h>
-#include <string.h>
+#include <iostream>
+#include <cerrno>
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"

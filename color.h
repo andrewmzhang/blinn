@@ -25,7 +25,7 @@ public:
 	void set_rgb(const int r, const int g, const int b);
 
 	static void test();
-	std::string to_string() const;
+	const char* to_string() const;
 
 
 };

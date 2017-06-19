@@ -31,14 +31,14 @@ int color::b(void) const {
 	return this->B;
 }
 
-string color::to_string(void) const {
+const char* color::to_string(void) const {
 	stringstream stringStream;
 	stringStream << "R: " << this->R << " G: " << this->G << " B: " << this->B << "\0";
 	string copyOfStr = stringStream.str();
 
 	cout << "R: " << this->R << " G: " << this->G << " B: " << this->B << "\0" << endl;
 
-	return stringStream.str();
+	return copyOfStr.c_str();
 
 }
 
