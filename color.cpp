@@ -36,10 +36,7 @@ const char* color::to_string(void) const {
 	stringStream << "R: " << this->R << " G: " << this->G << " B: " << this->B << "\0";
 	string copyOfStr = stringStream.str();
 
-	cout << "R: " << this->R << " G: " << this->G << " B: " << this->B << "\0" << endl;
-
 	return copyOfStr.c_str();
-
 }
 
 void color::test(void) {
