@@ -1,19 +1,36 @@
-#ifndef __color_h__
-#define __color_h__
+#include <string>
 
-/*
- *  * I got some of the colour codes (as well as having the idea of putting them in a macro) from here:
- *   * http://stackoverflow.com/questions/3506504/c-code-changes-terminal-text-color-how-to-restore-defaults-linux
- *    */
+#ifndef __color__
+#define __color__
+class color {
 
-#define RED    "\e[31m"
-#define GREEN  "\e[32m"
-#define YELLOW "\e[33m"
-#define WHITE  "\e[1m"
+private:
+	int R;
+	int G;
+	int B;	
 
-/*
- *  * COLOR_X resets the colour. Yes I'm inconsistent with how I spell colour.
- *   */
-#define COLOR_X "\e[m"
+
+public:
+
+	color(const int R = 0, const int G = 0, const int B = 0); 
+
+	int r() const;
+	int g() const;
+	int b() const;
+
+	void set_r(const int r);
+	void set_b(const int b);
+	void set_g(const int g);
+
+	void set_rgb(const int r, const int g, const int b);
+
+	static void test();
+	std::string to_string() const;
+
+
+};
 
 #endif
+	
+
+
