@@ -3,6 +3,7 @@
 #include "dbg.h"
 
 #include "color.h"
+#include "render.h"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ int main() {
 	
 	color::test();
 
+	render::test();
 
 	return 0;
 }

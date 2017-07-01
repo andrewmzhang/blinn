@@ -11,13 +11,13 @@ color::color(int r, int g, int b) :R(r), G(g), B(b) {
 }
 
 void color::set_r(const int r) {
-	this->R = r;
+	this->R = r % 256;
 }
 void color::set_g(const int g) {
-	this->G = g;
+	this->G = g % 256;
 }
 void color::set_b(const int b) {
-	this->B = b;
+	this->B = b % 256;
 }
 
 int color::r(void) const {
