@@ -48,6 +48,7 @@ void render::set_width(int w) {
 }
 
 
+
 void render::test() {
 
 	cout << "Test function" << endl;
