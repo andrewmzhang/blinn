@@ -31,6 +31,12 @@ int color::b(void) const {
 	return this->B;
 }
 
+void color::set_rgb(int r, int g, int b) {
+	this->set_r(r);
+	this->set_g(g);
+	this->set_b(b);
+}
+
 const char* color::to_string(void) {
 	stringstream ss;
 	

@@ -25,7 +25,7 @@ public:
 	void set_b(const int b);
 	void set_g(const int g);
 
-	void set_rgb(const int r, const int g, const int b);
+	void set_rgb(int r, int g, int b);
 
 	static void test();
 	const char* to_string();

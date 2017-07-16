@@ -12,6 +12,8 @@ all: main
 
 main: color.o render.o system.o
 
+test: test.o
+
 #draw.o: draw.cpp draw.h
 #	$(MOCQT4) draw.cpp | $(CC) $(OFLAGS) -c -x c++ - -include draw.cpp -o draw.o
 
