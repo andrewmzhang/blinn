@@ -5,8 +5,6 @@
 #include "color.h"
 #include "render.h"
 
-#include "draw.h"
-
 using namespace std;
 
 int main() {
@@ -17,9 +15,9 @@ int main() {
 	cout << "Hello, world!" << endl;
 
 
-	//	color::test();
+	color::test();
 
-	//	render::test();
+	//render::test();
 
 	/*
 	draw::setcolor(255, 0, 0);          // fully red, no green or blue

@@ -10,13 +10,13 @@ OFLAGS = $(INCL) -Wall -Wno-unreachable-code -Wno-return-type
 
 all: main 
 
-main: color.o render.o draw.o system.o
+main: color.o render.o system.o
 
-draw.o: draw.cpp draw.h
-	$(MOCQT4) draw.cpp | $(CC) $(OFLAGS) -c -x c++ - -include draw.cpp -o draw.o
+#draw.o: draw.cpp draw.h
+#	$(MOCQT4) draw.cpp | $(CC) $(OFLAGS) -c -x c++ - -include draw.cpp -o draw.o
 
-%: %.cpp draw.o draw.h
-	$(CC) $@.cpp draw.o  $(CFLAGS) -o $@
+#%: %.cpp draw.o draw.h
+#	$(CC) $@.cpp draw.o  $(CFLAGS) -o $@
 
 clean:
 	rm -f *.exe main color *.o

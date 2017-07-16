@@ -2,11 +2,11 @@
 #include "color.h"
 #include "dbg.h"
 #include <sstream>
+#include <string>
 
 using namespace std;
 
 color::color(int r, int g, int b) :R(r), G(g), B(b) {
-
 
 }
 
@@ -31,12 +31,13 @@ int color::b(void) const {
 	return this->B;
 }
 
-const char* color::to_string(void) const {
-	stringstream stringStream;
-	stringStream << "R: " << this->R << " G: " << this->G << " B: " << this->B << "\0";
-	string copyOfStr = stringStream.str();
+const char* color::to_string(void) {
+	stringstream ss;
+	
+	ss << "R: " << this->R << " G: " << this->G << " B: " << this->B << "\0";
 
-	return copyOfStr.c_str();
+	str = ss.str();	
+	return str.c_str();
 }
 
 void color::test(void) {
@@ -52,5 +53,8 @@ void color::test(void) {
 	white->set_g(20);
 	white->set_b(30);
 	log_info("White is now: %s", white->to_string());
+	
+	delete white;
+	delete black;
 
 }

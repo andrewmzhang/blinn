@@ -1,4 +1,5 @@
 #include <string>
+#include <sstream>
 
 #ifndef __color__
 #define __color__
@@ -7,7 +8,9 @@ class color {
 private:
 	int R;
 	int G;
-	int B;	
+	int B;
+	
+	std::string str;
 
 
 public:
@@ -25,7 +28,7 @@ public:
 	void set_rgb(const int r, const int g, const int b);
 
 	static void test();
-	const char* to_string() const;
+	const char* to_string();
 
 
 };

@@ -25,7 +25,7 @@ public:
 	void set_width(int w);
 
 	static void test();
-	const char* to_string() const;
+	const char* to_string();
 
 };
 #endif
