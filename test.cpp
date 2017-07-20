@@ -1,11 +1,14 @@
-#define BOOST_TEST_MODULE MyTest
-#include <boost/test/included/unit_test.hpp>  // include this to get main()
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE Hello
+#include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE(MyTestCase)
+int add(int i, int j)
 {
-	float x = 9.5f;
-
-	BOOST_CHECK(x != 0.0f);
-	BOOST_CHECK_EQUAL((int)x, 9);
-	BOOST_CHECK_CLOSE(x, 9.5f, 0.0001f);
+    return i + j;
 }
+
+BOOST_AUTO_TEST_CASE(universeInOrder)
+{
+    BOOST_CHECK(add(2, 2) == 5);
+}
+
