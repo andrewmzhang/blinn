@@ -12,7 +12,7 @@ all: main
 
 main: color.o render.o system.o
 
-test: test.o
+test: test.o render.o color.o system.o
 	$(CC) -o$@ $^ -lboost_unit_test_framework
 
 #draw.o: draw.cpp draw.h
@@ -22,4 +22,4 @@ test: test.o
 #	$(CC) $@.cpp draw.o  $(CFLAGS) -o $@
 
 clean:
-	rm -f *.exe main color *.o test render system
+	rm -f *.exe main color *.o test render system *.bmp

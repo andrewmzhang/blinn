@@ -13,10 +13,15 @@ render::render(const int h, const int w) {
 	this->height = h;
 	this->width = w;
 
-	this->frame = new color *[h];
+	this->frame = new unsigned char **[h];
 
 	for (int i = 0; i < h; i++) {
-		this->frame[i] = new color[w];
+		this->frame[i] = new unsigned char *[w];
+		for (int j = 0; j < w; j++) {
+			this->frame[i][j] = new unsigned char[3];
+			for (int k = 0; k < 3; k++)
+				this->frame[i][j][k] = 0;
+		}
 	}
 
 }
@@ -54,10 +59,12 @@ void render::set_point(float x, float y) {
 		log_info("Error: set_point invalid!");
 	}
 
-	int point_x = (int) round(x * height);
-	int point_y = (int) round(y * width);
+	int point_x = (int) round(x * (height-1));
+	int point_y = (int) round(y * (width-1));
 
-	this->frame[point_x][point_y].set_rgb(this->r, this->g, this->b);
+	this->frame[point_x][point_y][0] = this->r;
+	this->frame[point_x][point_y][1] = this->g;
+	this->frame[point_x][point_y][2] = this->b;
 
 }
 
@@ -94,9 +101,21 @@ render::~render() {
 
 void render::test() {
 
-	cout << "Test function" << endl;
+	render r(100, 100);
+	color mid(125, 125, 125);
+	r.set_color(&mid);
+
+	r.set_point(.5, .5);
+	r.write_bmp_file( 0, "testout.bmp", r.frame, 100, 100);
 
 }
+
+void render::print(int num, string str) {
+
+	this->write_bmp_file(num, str, this->frame, this->height, this->width);
+
+}
+
 
 string render::int_to_five_digit_string(int frame_number) {
 
@@ -107,6 +126,8 @@ string render::int_to_five_digit_string(int frame_number) {
 	return strm.str();
 
 }
+
+
 
 void render::write_bmp_header_file(ofstream& output_file, int px, int pz) {
 	unsigned short int bfType;

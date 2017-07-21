@@ -28,7 +28,7 @@ private:
 	int g;
 	int b;
 
-	color** frame;
+	unsigned char ***frame;
 
 	std::string int_to_five_digit_string(int frame_number);
 	int string_to_int(std::string s);
@@ -53,6 +53,8 @@ public:
 
 	static void test();
 	const char* to_string();
+
+	void print(int num = 0, std::string str = "default");
 
 	~render();
 

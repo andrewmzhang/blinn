@@ -1,4 +1,9 @@
 
+
+
+*.bmp
+
+
 # Created by https://www.gitignore.io/api/c,vim,c++
 
 ### C ###
