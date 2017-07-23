@@ -8,11 +8,13 @@
 
 
 
-BOOST_AUTO_TEST_CASE(color_test)
+BOOST_AUTO_TEST_CASE(cirle_test)
 {
 
-	render::test();
+	render r(100, 100);
 
+	r.set_circle(.5, .5, .2);	
 
+	r.print(0, "hello.bmp");
 }
 

@@ -68,6 +68,51 @@ void render::set_point(float x, float y) {
 
 }
 
+void render::put_point(int x, int y) {
+	if (0 <= x && x <= width-1 && 0 <= y && y <= height-1) {
+		this->frame[x][y][0] = this->r;
+		this->frame[x][y][1] = this->g;
+		this->frame[x][y][2] = this->b;
+	}
+}
+
+void render::set_circle(float x_point, float y_point, float radius) {
+
+	int rad = radius * (this->width -1);
+	int x0 = x_point * (this->width - 1);
+	int y0 = y_point * (this->height - 1);
+
+	int x = rad - 1;
+	int y = 0;
+	int dx = 1;
+	int dy = 1;
+	int err = dx - (rad << 1);
+	
+	while (x >= y) {
+		put_point(x0 + x, y0+y);
+		put_point(x0 + y, y0 + x);
+       	 	put_point(x0 - y, y0 + x);
+        	put_point(x0 - x, y0 + y);
+        	put_point(x0 - x, y0 - y);
+        	put_point(x0 - y, y0 - x);
+       		put_point(x0 + y, y0 - x);
+        	put_point(x0 + x, y0 - y);
+
+        	if (err <= 0) {
+            		y++;
+            		err += dy;
+            		dy +=2;
+        	}
+        	if (err > 0) {
+            		x--;
+            		dx += 2;
+            		err += (-rad << 1) + dx;
+        	}
+    	}
+}	
+
+	
+
 void render::set_height(int h) {
 
 	this->height = h;

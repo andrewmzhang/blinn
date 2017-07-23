@@ -35,7 +35,7 @@ private:
 	void write_bmp_header_file(std::ofstream& output_file, int px, int pz);
 	void write_bmp_file(int f_number, std::string output_file_name, unsigned char ***output_buffer, int px, int pz);
 
-
+	void put_point(int x, int y);
 public:
 
 	render(const int h = 0, const int w = 0);
@@ -47,6 +47,7 @@ public:
 
 	void set_color(color* color);
 	void set_point(float x, float y);
+	void set_circle(float x, float y, float radius);
 
 	void set_height(int h);
 	void set_width(int w);
