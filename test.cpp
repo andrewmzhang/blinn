@@ -1,20 +1,24 @@
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE Hello
-#include <boost/test/unit_test.hpp>
+#define BOOST_TEST_MODULE decorator_13
+#include <boost/test/included/unit_test.hpp>
 
+namespace utf = boost::unit_test;
+namespace fpc = boost::test_tools::fpc;
 
-#include "color.h"
-#include "render.h"
-
-
-
-BOOST_AUTO_TEST_CASE(cirle_test)
+BOOST_AUTO_TEST_CASE(test1, * utf::tolerance(0.0005))
 {
+      BOOST_TEST( 0.001 == 0.000 );
+        BOOST_TEST( 1.100 == 1.101 );
+}
 
-	render r(100, 100);
+BOOST_AUTO_TEST_CASE(test2, * utf::tolerance(0.005))
+{
+      BOOST_TEST( 0.001 == 0.000 );
+        BOOST_TEST( 1.100 == 1.101 );
+}
 
-	r.set_circle(.5, .5, .2);	
-
-	r.print(0, "hello.bmp");
+BOOST_AUTO_TEST_CASE(test3, * utf::tolerance(0.05F))
+{
+      BOOST_TEST( 0.001 == 0.000 );
+        BOOST_TEST( 1.100 == 1.101 );
 }
 

@@ -1,0 +1,37 @@
+
+#define BOOST_TEST_MODULE TesterMcTestyface
+#include <boost/test/included/unit_test.hpp>
+
+namespace utf = boost::unit_test;
+
+
+#include "color.h"
+#include "render.h"
+#include "point.h"
+
+
+BOOST_AUTO_TEST_CASE(point_test, * utf::tolerance(0.0001)) 
+{
+
+    point p(0, 0, 0);
+    point p2(10, 0, 0);
+
+    BOOST_TEST(point::distance(&p, &p2) == 10);
+
+    point p3(15, 10, 20);
+    BOOST_TEST(point::distance(&p, &p3) == 26.925824);
+
+
+}
+
+
+BOOST_AUTO_TEST_CASE(cirle_test)
+{
+
+	render r(100, 100);
+
+	r.set_circle(.5, .5, .2);	
+
+	r.print(0, "hello.bmp");
+}
+
