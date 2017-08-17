@@ -1,5 +1,5 @@
 #include "ray.h"
-
+#include <sstream>
 
 
 using namespace std;
@@ -16,10 +16,5 @@ ray::ray(point *pt, point *vec) {
 
 const char * ray::to_string() {
 
-    stringstream stringStream;
-    stringStream << "ray: < " << this->pt->get_x() << " G: " << this->freeze << " B: " << this->n << "\0";
-    string copyOfStr = stringStream.str();
-
-    return copyOfStr.c_str();
 
 }
