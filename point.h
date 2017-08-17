@@ -1,8 +1,6 @@
 #ifndef __point_h__
 #define __point_h__
 
-
-
 class point {
 
 private:
@@ -13,9 +11,14 @@ private:
 public:
     point(float x, float y, float z) : x(x), y(y), z(z) {};
 	static double distance(point* a, point* b);
-	static double get_ray(point* start, point* end);
+	static double distance2(point* a, point* b);
 
-    static point dot(point *a, point *b);
+    static double dot(point *a, point *b);
+
+	double get_x();
+	double get_y();
+	double get_z();
+	
 
 };
 

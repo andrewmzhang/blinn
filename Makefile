@@ -8,11 +8,11 @@ OFLAGS = $(INCL) -Wall -Wno-unreachable-code -Wno-return-type
 
 
 
-all: main 
+all: main
 
-main: color.o render.o system.o point.o
+main: color.o render.o system.o point.o ray.o
 
-test: test.o render.o color.o system.o point.o
+test: test.o render.o color.o system.o point.o ray.o
 	$(CC) -o$@ $^ -lboost_unit_test_framework
 
 #draw.o: draw.cpp draw.h

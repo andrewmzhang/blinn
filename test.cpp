@@ -1,24 +1,22 @@
-#define BOOST_TEST_MODULE decorator_13
+#define BOOST_TEST_MODULE test_01
 #include <boost/test/included/unit_test.hpp>
 
+#include "ray.h"
+#include "point.h"
+
 namespace utf = boost::unit_test;
-namespace fpc = boost::test_tools::fpc;
 
-BOOST_AUTO_TEST_CASE(test1, * utf::tolerance(0.0005))
+BOOST_AUTO_TEST_CASE(ray_basic, * utf::tolerance(0.00001))
 {
-      BOOST_TEST( 0.001 == 0.000 );
-        BOOST_TEST( 1.100 == 1.101 );
-}
 
-BOOST_AUTO_TEST_CASE(test2, * utf::tolerance(0.005))
-{
-      BOOST_TEST( 0.001 == 0.000 );
-        BOOST_TEST( 1.100 == 1.101 );
-}
+    point start(0, 0, 0);
+    point vec(1, 1, 1);
 
-BOOST_AUTO_TEST_CASE(test3, * utf::tolerance(0.05F))
-{
-      BOOST_TEST( 0.001 == 0.000 );
-        BOOST_TEST( 1.100 == 1.101 );
-}
+    ray r(&start, &vec);
 
+
+    BOOST_TEST(r.to_string() == std::string("Hello\n"));
+
+
+
+}
