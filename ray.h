@@ -9,6 +9,8 @@ private:
     point *pt;
     point *vec;
 
+    char buffer[50];
+
 public:
 
     ray(point *pt, point *vec);
