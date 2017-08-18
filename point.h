@@ -15,10 +15,14 @@ public:
 
     static double dot(point *a, point *b);
 
-	double get_x();
-	double get_y();
-	double get_z();
-	
+	point operator+(const point& p);
+	point operator-(const point& p);
+	double operator*(const point& p);
+
+	double get_x() const;
+	double get_y() const;
+	double get_z() const;
+
 
 };
 

@@ -6,12 +6,13 @@
 class ray {
 
 private:
-    point *pt;
-    point *vec;
+
 
     char buffer[50];
 
 public:
+    point *pt;
+    point *vec;
 
     ray(point *pt, point *vec);
     static ray *get_ray(point *start, point *end);
