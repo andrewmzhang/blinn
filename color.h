@@ -27,6 +27,8 @@ public:
 
 	void set_rgb(int r, int g, int b);
 
+	color operator*(const double& p);
+
 	static void test();
 	const char* to_string();
 

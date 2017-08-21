@@ -5,7 +5,7 @@
 
 class geometry {
 
-    virtual double intersection(ray* r) = -1;
+    virtual double intersection(ray* r) = 0;
 
 
 

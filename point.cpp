@@ -71,3 +71,23 @@ double point::operator* (const point& b) {
 
 
 }
+
+point* point::normalize(void) {
+
+	double length = sqrt(*this * *this);
+
+	if (length == 0)
+		return 0;
+
+	this->x = this->x / length;
+	this->y = this->y / length;
+	this->z = this->z / length;
+
+	return this;
+}
+
+point point::operator* (const double& d) {
+
+	return point( d * this->x, d * this->y, d * this->z);
+
+}

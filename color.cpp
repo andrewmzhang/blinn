@@ -37,6 +37,11 @@ void color::set_rgb(int r, int g, int b) {
 	this->set_b(b);
 }
 
+
+color color::operator*(const double& p) {
+	return color(this->r() * p, this->g() * p, this->b() * p);
+}
+
 const char* color::to_string(void) {
 	stringstream ss;
 	

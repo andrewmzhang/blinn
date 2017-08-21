@@ -2,6 +2,8 @@
 #define __sphere_h__
 
 #include "point.h"
+#include "ray.h"
+#include "geometry.h"
 
 class sphere: public geometry {
 
@@ -10,8 +12,10 @@ class sphere: public geometry {
 
 public:
 
-    double intersection(ray *r);
+    bool intersection(ray *r, double* t);
 
+    point get_normal(point *pt);
+	
 
 };
 

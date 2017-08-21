@@ -1,16 +1,15 @@
 CC=g++
-CPPFLAGS= -g -Wall -lQtCore -lQtGui -lboost_unit_test_framework
+CPPFLAGS= -g -Wall 
 
 MOCQT4 = moc-qt4
 
-INCL = -I/usr/include/qt4 -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui
 OFLAGS = $(INCL) -Wall -Wno-unreachable-code -Wno-return-type
 
 
 
 all: main
 
-main: color.o render.o system.o point.o ray.o
+main: color.o render.o system.o point.o square.o ray.o tracer.o sphere.o 
 
 test: test.o render.o color.o system.o point.o ray.o
 	$(CC) -o$@ $^ -lboost_unit_test_framework
