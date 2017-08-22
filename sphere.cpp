@@ -5,8 +5,8 @@
 bool sphere::intersection(ray *r, double *t) {
 
 
-    point L = *r->pt - *this->center;
-    double ldotvec = L * *r->vec;
+    point L =  *(this->center) - *(r->pt);
+    double ldotvec = L * *(r->vec->normalize());
 
     double d2 = L * L - (ldotvec * ldotvec);
     double radius2 = radius * radius;
@@ -24,7 +24,7 @@ bool sphere::intersection(ray *r, double *t) {
 
     if (t0 < 0) {
 	    t0 = t1;
-	    if (t0 < 0) 
+	    if (t0 < 0)
 		    return false;
     }
 
@@ -36,10 +36,9 @@ bool sphere::intersection(ray *r, double *t) {
 }
 
 point sphere::get_normal(point *pt) {
-	
+
 	if (point::distance(pt, this->center) - radius > .0001) {
-		log_err("pt does not appear to be on the sphere\n");
-		return *pt;
+		log_err("pt does not appear to be on the sphere %f\n", point::distance(pt, this->center));
 	}
 
 
@@ -52,4 +51,20 @@ point sphere::get_normal(point *pt) {
 }
 
 
+color sphere::get_color() {
+	return *(this->c);
+}
 
+sphere::sphere(double x, double y, double z, double r) {
+
+    this->center = new point(x, y, z);
+    this->radius = r;
+
+}
+
+void sphere::set_color(int r, int g, int b) {
+
+    this->c = new color(r, g, b);
+
+
+}

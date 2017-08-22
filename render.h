@@ -1,6 +1,6 @@
 /*
  * I have modified Dr. Matt Lazar's animate_rectangle_sv.cpp file
- * so that it works as a unit box renderer. 
+ * so that it works as a unit box renderer.
  */
 
 
@@ -41,7 +41,7 @@ public:
 	render(const int h = 0, const int w = 0);
 
 	void render_frame() const;
-	
+
 	int get_width() const;
 	int get_height() const;
 

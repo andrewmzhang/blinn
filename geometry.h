@@ -5,7 +5,11 @@
 
 class geometry {
 
-    virtual double intersection(ray* r) = 0;
+
+
+public:
+    double albedo = .18;
+    virtual bool intersection(ray* r, double* t) = 0;
 
 
 

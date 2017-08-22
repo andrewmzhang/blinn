@@ -87,7 +87,7 @@ void render::set_circle(float x_point, float y_point, float radius) {
 	int dx = 1;
 	int dy = 1;
 	int err = dx - (rad << 1);
-	
+
 	while (x >= y) {
 		put_point(x0 + x, y0+y);
 		put_point(x0 + y, y0 + x);
@@ -109,9 +109,9 @@ void render::set_circle(float x_point, float y_point, float radius) {
             		err += (-rad << 1) + dx;
         	}
     	}
-}	
+}
 
-	
+
 
 void render::set_height(int h) {
 
@@ -133,7 +133,7 @@ const char* to_string() {
 }
 
 render::~render() {
-	
+
 	int i = 0;
 	for (i = 0; i < height; i++) {
 		delete[] frame[i];
@@ -177,7 +177,7 @@ string render::int_to_five_digit_string(int frame_number) {
 void render::write_bmp_header_file(ofstream& output_file, int px, int pz) {
 	unsigned short int bfType;
 	bfType = 0x4D42;
-	output_file.write ((char*)&bfType, sizeof (short int));   
+	output_file.write ((char*)&bfType, sizeof (short int));
 
 	unsigned int bfSize;
 	int rem;
@@ -192,66 +192,66 @@ void render::write_bmp_header_file(ofstream& output_file, int px, int pz) {
 		padding=4-rem;
 	}
 
-	bfSize = 14 + 40 + (3 * px+padding) * pz;   
-	output_file.write ((char*)&bfSize, sizeof (int));   
+	bfSize = 14 + 40 + (3 * px+padding) * pz;
+	output_file.write ((char*)&bfSize, sizeof (int));
 
 	unsigned short int bfReserved1;
 	bfReserved1 = 0;
-	output_file.write ((char*)&bfReserved1, sizeof (short int));   
+	output_file.write ((char*)&bfReserved1, sizeof (short int));
 
 	unsigned short int bfReserved2;
 	bfReserved2 = 0;
-	output_file .write ((char*)&bfReserved2, sizeof (short int));   
+	output_file .write ((char*)&bfReserved2, sizeof (short int));
 
 	unsigned int bfOffsetBits;
 	bfOffsetBits = 14 + 40;
-	output_file.write ((char*)&bfOffsetBits, sizeof (int));   
+	output_file.write ((char*)&bfOffsetBits, sizeof (int));
 
 	unsigned int biSize;
 	biSize=40;
-	output_file.write ((char*)&biSize, sizeof (int));   
+	output_file.write ((char*)&biSize, sizeof (int));
 
 	int biWidth;
 	biWidth=px;
-	output_file.write ((char*)&biWidth, sizeof (int));   
+	output_file.write ((char*)&biWidth, sizeof (int));
 
 	int biHeight;
 	biHeight=pz;
-	output_file.write ((char*)&biHeight, sizeof (int));   
+	output_file.write ((char*)&biHeight, sizeof (int));
 
 	unsigned short int biPlanes;
 	biPlanes=1;
-	output_file.write ((char*)&biPlanes, sizeof (short int));   
+	output_file.write ((char*)&biPlanes, sizeof (short int));
 
 	unsigned short int biBitCount;
 	biBitCount=24;
-	output_file.write ((char*)&biBitCount, sizeof (short int));   
+	output_file.write ((char*)&biBitCount, sizeof (short int));
 
 	unsigned int biCompression;
 
 	unsigned int bi_rgb = 0;
 	biCompression=bi_rgb;
-	output_file.write ((char*)&biCompression, sizeof (int));   
+	output_file.write ((char*)&biCompression, sizeof (int));
 
 	unsigned int biSizeImage;
 	biSizeImage=0;
-	output_file.write ((char*)&biSizeImage, sizeof (int));   
+	output_file.write ((char*)&biSizeImage, sizeof (int));
 
 	unsigned int biXPelsPerMeter;
 	biXPelsPerMeter=0;
-	output_file.write ((char*)&biXPelsPerMeter, sizeof (int));   
+	output_file.write ((char*)&biXPelsPerMeter, sizeof (int));
 
 	unsigned int biYPelsPerMeter;
 	biYPelsPerMeter=0;
-	output_file.write ((char*)&biYPelsPerMeter, sizeof (int));   
+	output_file.write ((char*)&biYPelsPerMeter, sizeof (int));
 
 	unsigned int biClrUsed;
 	biClrUsed = 0;
-	output_file.write ((char*)&biClrUsed, sizeof (int));   
+	output_file.write ((char*)&biClrUsed, sizeof (int));
 
 	unsigned int biClrImportant;
 	biClrImportant = 0;
-	output_file.write ((char*)&biClrImportant, sizeof (int));   
+	output_file.write ((char*)&biClrImportant, sizeof (int));
 }
 
 void render::write_bmp_file(int f_number, string output_file_name, unsigned char * * * output_buffer, int px, int pz)
@@ -295,12 +295,12 @@ void render::write_bmp_file(int f_number, string output_file_name, unsigned char
 		{
 			line_buffer[3*j+0]=output_buffer[i][j][2];
 			line_buffer[3*j+1]=output_buffer[i][j][1];
-			line_buffer[3*j+2]=output_buffer[i][j][0];         
+			line_buffer[3*j+2]=output_buffer[i][j][0];
 		}
-		ostrm_1.write ((char*)line_buffer, px*3*sizeof (unsigned char));      
-		ostrm_1.write ((char*)p_buffer, padding*sizeof (unsigned char));      
+		ostrm_1.write ((char*)line_buffer, px*3*sizeof (unsigned char));
+		ostrm_1.write ((char*)p_buffer, padding*sizeof (unsigned char));
 	}
 	delete[] line_buffer;
 	line_buffer = NULL;
-	ostrm_1.close();   
+	ostrm_1.close();
 }
