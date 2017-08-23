@@ -1,5 +1,5 @@
 CC=g++
-CPPFLAGS= -g -Wall 
+CPPFLAGS= -g -Wall
 
 MOCQT4 = moc-qt4
 

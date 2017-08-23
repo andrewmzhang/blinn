@@ -12,6 +12,7 @@ class sphere: public geometry {
     double radius;
 	color* c;
 
+
 public:
 
     sphere(double x, double y, double z, double r);

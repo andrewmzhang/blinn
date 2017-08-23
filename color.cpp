@@ -10,14 +10,26 @@ color::color(int r, int g, int b) :R(r), G(g), B(b) {
 
 }
 
-void color::set_r(const int r) {
-	this->R = r % 256;
+void color::set_r(int r) {
+	if (r > 255)
+		r = 255;
+	if (r < 0)
+		r = 0;
+	this->R = r;
 }
-void color::set_g(const int g) {
-	this->G = g % 256;
+void color::set_g(int g) {
+	if (g > 255)
+		g = 255;
+	if (g < 0)
+		g = 0;
+	this->G = g;
 }
-void color::set_b(const int b) {
-	this->B = b % 256;
+void color::set_b(int b) {
+	if (b > 255)
+		b = 255;
+	if (b < 0)
+		b = 0;
+	this->B = b;
 }
 
 int color::r(void) const {
@@ -44,10 +56,10 @@ color color::operator*(const double& p) {
 
 const char* color::to_string(void) {
 	stringstream ss;
-	
+
 	ss << "R: " << this->R << " G: " << this->G << " B: " << this->B << "\0";
 
-	str = ss.str();	
+	str = ss.str();
 	return str.c_str();
 }
 
@@ -64,7 +76,7 @@ void color::test(void) {
 	white->set_g(20);
 	white->set_b(30);
 	log_info("White is now: %s", white->to_string());
-	
+
 	delete white;
 	delete black;
 

@@ -9,12 +9,12 @@ private:
 	float z;
 
 public:
-    	point(float x, float y, float z) : x(x), y(y), z(z) {};
+    point(float x, float y, float z) : x(x), y(y), z(z) {};
 	static double distance(point* a, point* b);
 	static double distance2(point* a, point* b);
 
 	point* normalize(void);
-	
+
 	point operator+(const point& p);
 	point operator-(const point& p);
 	double operator*(const point& p);

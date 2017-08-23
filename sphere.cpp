@@ -59,6 +59,7 @@ sphere::sphere(double x, double y, double z, double r) {
 
     this->center = new point(x, y, z);
     this->radius = r;
+    this->albedo = .18;
 
 }
 

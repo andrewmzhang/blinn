@@ -3,10 +3,10 @@
 #include "tracer.h"
 #include "square.h"
 #include "ray.h"
-#include "sphere.h"
 #include "render.h"
 
 #include <iostream>
+#include <limits>
 
 
 using namespace std;
@@ -14,6 +14,10 @@ using namespace std;
 tracer::tracer(int length) {
 	this->length = length;
 	this->squares = new square*[length];
+	this->num_spheres = 0;
+	this->count = 0;
+
+
 
 	double sq_width = 1.0 / length;
 	for (int i = 0; i < length; i++) {
@@ -32,7 +36,7 @@ tracer::tracer(int length) {
 }
 
 
-void tracer::add_spheres(sphere* s, int n) {
+void tracer::add_spheres(geometry* s, int n) {
 	this->num_spheres = n;
 	this->spheres = s;
 
@@ -62,11 +66,11 @@ void tracer::trace() {
 			ray *bullet = new ray(camera, &vec);
 
 
-			double t_s = 11111;
+			double t_s = numeric_limits<double>::infinity();
 			double t_temp = t_s;
-			sphere* closest = 0;
+			geometry* closest = 0;
 			for (int s = 0; s < num_spheres; s++) {
-				if (this->spheres[s].intersection(bullet, &t_temp) && true) {
+				if (this->spheres[s].intersection(bullet, &t_temp) && t_temp < t_s) {
 					debug("Hit!");
 					t_s = t_temp;
 					closest = &(this->spheres[s]);
@@ -81,7 +85,7 @@ void tracer::trace() {
 
 				double percent = -(normal * *light);
 				percent = std::max(0.0, percent);
-				percent = .18 / 3.14159261 * percent * 10;
+				percent = .18 / 3.14159261 * percent * 25;
 				debug("Light percentage %f", percent);
 
 				shade = closest->get_color() * percent;

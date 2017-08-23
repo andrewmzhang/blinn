@@ -3,20 +3,19 @@
 
 
 #include "square.h"
+#include "geometry.h"
 
-
-class sphere;
 
 class tracer {
 
 
 private:
 
-	int count = 0;
+	int count;
 
 	square** squares;
-	sphere* spheres;
-	int num_spheres = 0;
+	geometry* spheres;
+	int num_spheres;
 
 	int length;
 
@@ -26,7 +25,7 @@ public:
 
 	tracer (int length);
 
-	void add_spheres(sphere* s, int num);	
+	void add_spheres(geometry* s, int num);
 
 	void trace();
 

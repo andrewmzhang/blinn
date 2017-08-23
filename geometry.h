@@ -1,7 +1,9 @@
 #ifndef __geometry_h__
-#define __geometry_h_
+#define __geometry_h__
 
 #include "ray.h"
+#include "color.h"
+#include "point.h"
 
 class geometry {
 
@@ -9,7 +11,11 @@ class geometry {
 
 public:
     double albedo = .18;
+    geometry() {};
     virtual bool intersection(ray* r, double* t) = 0;
+    virtual color get_color() = 0;
+    virtual point get_normal(point* p) = 0;
+
 
 
 

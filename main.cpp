@@ -12,16 +12,12 @@ using namespace std;
 int main() {
 
 
-	log_info("Hello world test");
 
-	cout << "Hello, world!" << endl;
-
-
-	tracer t(300);
+	tracer t(500);
 
 	sphere s(.5, .5, 1, .25);
 	color red(125, 0, 0);
-	point light(0, 1, 0);
+	point light(.5, .5, .5);
 
 
 	s.set_color(125, 0, 0);
