@@ -4,6 +4,7 @@
 
 #include "square.h"
 #include "geometry.h"
+#include <vector>
 
 
 class tracer {
@@ -14,12 +15,13 @@ private:
 	int count;
 
 	square** squares;
-	geometry* spheres;
+	std::vector<geometry*> spheres;
 	int num_spheres;
 
 	int length;
-
+	double li;
 	point *light;
+
 
 public:
 
@@ -29,9 +31,11 @@ public:
 
 	void trace();
 
+	void inch_trace();
+
 	void clean();
 
-	void add_light(point *l);
+	void add_light(point *l, double str);
 
 
 

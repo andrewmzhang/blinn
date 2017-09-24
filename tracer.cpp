@@ -1,4 +1,5 @@
 
+#include "math.h"
 #include "dbg.h"
 #include "tracer.h"
 #include "square.h"
@@ -37,8 +38,9 @@ tracer::tracer(int length) {
 
 
 void tracer::add_spheres(geometry* s, int n) {
-	this->num_spheres = n;
-	this->spheres = s;
+	for (int i = 0; i < n; i++)
+		this->spheres.push_back(s + i);
+	this->num_spheres += n;
 
 }
 
@@ -46,7 +48,7 @@ void tracer::add_spheres(geometry* s, int n) {
 void tracer::trace() {
 
 	render r(this->length, this->length);
-	color c(125, 125, 125);
+	color background(125, 125, 125);
 
 
 
@@ -57,7 +59,7 @@ void tracer::trace() {
 	for (int i = 0; i < length; i++) {
 		for (int j = 0; j < length; j++) {
 
-			color shade = c;
+			color shade = background;
 
 			point center = this->squares[i][j].get_center();
 
@@ -70,10 +72,10 @@ void tracer::trace() {
 			double t_temp = t_s;
 			geometry* closest = 0;
 			for (int s = 0; s < num_spheres; s++) {
-				if (this->spheres[s].intersection(bullet, &t_temp) && t_temp < t_s) {
+				if (this->spheres[s]->intersection(bullet, &t_temp) && t_temp < t_s) {
 					debug("Hit!");
 					t_s = t_temp;
-					closest = &(this->spheres[s]);
+					closest = this->spheres[s];
 				}
 			}
 
@@ -85,7 +87,7 @@ void tracer::trace() {
 
 				double percent = -(normal * *light);
 				percent = std::max(0.0, percent);
-				percent = .18 / 3.14159261 * percent * 25;
+				percent = closest->albedo / M_PI * percent * this->li;
 				debug("Light percentage %f", percent);
 
 				shade = closest->get_color() * percent;
@@ -107,10 +109,75 @@ void tracer::trace() {
 	count++;
 }
 
+/*
+void tracer::trace() {
 
-void tracer::add_light(point *l) {
+	render r(this->length, this->length);
+	color background(125, 125, 125);
+
+
+
+	int length = this->length;
+
+	point* camera = new point(.5, .5, -5);
+
+	for (int i = 0; i < length; i++) {
+		for (int j = 0; j < length; j++) {
+
+			color shade = background;
+
+			point center = this->squares[i][j].get_center();
+
+			point vec = center - (*camera);
+
+			ray *bullet = new ray(camera, &vec);
+
+
+			double t_s = numeric_limits<double>::infinity();
+			double t_temp = t_s;
+			geometry* closest = 0;
+			for (int s = 0; s < num_spheres; s++) {
+				if (this->spheres[s]->intersection(bullet, &t_temp) && t_temp < t_s) {
+					debug("Hit!");
+					t_s = t_temp;
+					closest = this->spheres[s];
+				}
+			}
+
+			if (closest != 0) {
+
+				point surface = *(bullet->pt) + *(bullet->vec) * t_s;
+
+				point normal = closest->get_normal(&surface);
+
+				double percent = -(normal * *light);
+				percent = std::max(0.0, percent);
+				percent = closest->albedo / M_PI * percent * this->li;
+				debug("Light percentage %f", percent);
+
+				shade = closest->get_color() * percent;
+			}
+
+
+			square* s = &this->squares[i][j];
+			this->squares[i][j].set_value(&shade);
+			r.set_color(&shade);
+			r.set_point(s->get_center().get_x(), s->get_center().get_y());
+
+
+		}
+	}
+
+	r.print(0, "hello.bmp");
+
+
+	count++;
+}
+*/
+
+void tracer::add_light(point *l, double s) {
 
 
 	this->light = new point(l->get_x(), l->get_y(), l->get_z());
-
+	this->li = s;
 }

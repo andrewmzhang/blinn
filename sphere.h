@@ -11,6 +11,9 @@ class sphere: public geometry {
     point *center;
     double radius;
 	color* c;
+    double k;
+
+    bool meta;
 
 
 public:
@@ -21,6 +24,10 @@ public:
     bool intersection(ray *r, double* t);
     point get_normal(point *pt);
 	color get_color();
+
+    bool is_meta();
+    double meta_value(double x, double y, double z);
+    void set_k(double k);
 
 };
 

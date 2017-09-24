@@ -8,6 +8,15 @@ using namespace std;
 
 color::color(int r, int g, int b) :R(r), G(g), B(b) {
 
+	normalize();
+
+}
+
+
+void color::normalize() {
+	this->set_r(this->R);
+	this->set_b(this->B);
+	this->set_g(this->G);
 }
 
 void color::set_r(int r) {

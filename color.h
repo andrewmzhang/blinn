@@ -12,6 +12,9 @@ private:
 
 	std::string str;
 
+	void normalize();
+
+
 
 public:
 

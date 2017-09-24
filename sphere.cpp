@@ -50,6 +50,21 @@ point sphere::get_normal(point *pt) {
 
 }
 
+bool sphere::is_meta() {
+    return meta;
+}
+
+double sphere::meta_value(double x, double y , double z) {
+
+    return k / ((x - center->get_x()) * (x - center->get_x()) + (y - center->get_y()) * (y - center->get_y()) + (z - center->get_z()) * (z - center->get_z()));
+
+}
+
+void sphere::set_k(double k) {
+
+
+}
+
 
 color sphere::get_color() {
 	return *(this->c);
