@@ -27,8 +27,11 @@ int main() {
 	t.add_spheres(&s1, 1);
 	t.add_light(&light, 50);
 
-	t.trace();
 
+
+	t.trace();
+    s1.set_center(0.1, 0.3, .25);
+    t.trace();
 
 
 	return 0;

@@ -37,6 +37,8 @@ public:
 
 	void add_light(point *l, double str);
 
+	void meta_trace();
+
 
 
 

@@ -84,3 +84,9 @@ void sphere::set_color(int r, int g, int b) {
 
 
 }
+
+void sphere::set_center(double x, double y, double z) {
+
+    this->center = new point(x, y, z);
+
+}

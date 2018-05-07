@@ -7,7 +7,7 @@
 namespace utf = boost::unit_test;
 
 
-BOOST_AUTO_TEST_CASE(point_basic, * utf::tolerance(0.00001))
+BOOST_AUTO_TEST_CASE(point_basic)
 {
 
     point start(0, 0, 0);
@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(point_basic, * utf::tolerance(0.00001))
 
 }
 
-BOOST_AUTO_TEST_CASE(ray_basic, * utf::tolerance(0.00001))
+BOOST_AUTO_TEST_CASE(ray_basic)
 {
 
     point start(0, 0, 0);

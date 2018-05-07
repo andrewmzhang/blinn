@@ -8,6 +8,7 @@
 
 class sphere: public geometry {
 
+protected:
     point *center;
     double radius;
 	color* c;
@@ -28,6 +29,8 @@ public:
     bool is_meta();
     double meta_value(double x, double y, double z);
     void set_k(double k);
+
+    void set_center(double x, double y, double z);
 
 };
 

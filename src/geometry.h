@@ -7,8 +7,6 @@
 
 class geometry {
 
-
-
 public:
     double albedo = .18;
     virtual bool intersection(ray* r, double* t) = 0;
@@ -19,8 +17,7 @@ public:
     virtual double meta_value(double x, double y, double z) = 0;
     virtual void set_k(double k) = 0;
 
-
-
+    virtual void set_center(double x, double y, double z) = 0;
 
 };
 

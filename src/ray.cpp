@@ -33,3 +33,21 @@ const char * ray::to_string() {
 
 
 }
+
+
+point ray::inch_by(double x) {
+
+    double startx = this->pt->get_x();
+    double starty = this->pt->get_y();
+    double startz = this->pt->get_z();
+
+    double deltax = this->vec->get_x();
+    double deltay = this->vec->get_y();
+    double deltaz = this->vec->get_z();
+
+
+    return point(startx + x * deltax, starty + x * deltay, startz + x * deltaz);
+
+
+
+}

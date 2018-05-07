@@ -17,6 +17,8 @@ public:
     ray(point *pt, point *vec);
     static ray *get_ray(point *start, point *end);
 
+    point inch_by(double x);
+
 
     const char * to_string();
 
