@@ -4,12 +4,12 @@
 class point {
 
 private:
-	float x;
-	float y;
-	float z;
+    double x;
+    double y;
+    double z;
 
 public:
-    point(float x, float y, float z) : x(x), y(y), z(z) {};
+    point(double x, double y, double z) : x(x), y(y), z(z) {};
 	static double distance(point* a, point* b);
 	static double distance2(point* a, point* b);
 
@@ -23,6 +23,14 @@ public:
 	double get_x() const;
 	double get_y() const;
 	double get_z() const;
+
+    void set_x(double x);
+
+    void set_y(double y);
+
+    void set_z(double z);
+
+
 
 
 };

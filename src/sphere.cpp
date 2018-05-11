@@ -56,7 +56,8 @@ bool sphere::is_meta() {
 
 double sphere::meta_value(double x, double y , double z) {
 
-    return k / ((x - center->get_x()) * (x - center->get_x()) + (y - center->get_y()) * (y - center->get_y()) + (z - center->get_z()) * (z - center->get_z()));
+    return radius / ((x - center->get_x()) * (x - center->get_x()) + (y - center->get_y()) * (y - center->get_y()) +
+                     (z - center->get_z()) * (z - center->get_z()));
 
 }
 

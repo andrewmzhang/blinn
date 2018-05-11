@@ -3,7 +3,6 @@
 #include <math.h>
 
 #include "ray.h"
-#include "point.h"
 
 using namespace std;
 
@@ -90,4 +89,17 @@ point point::operator* (const double& d) {
 
 	return point( d * this->x, d * this->y, d * this->z);
 
+}
+
+
+void point::set_x(double x) {
+    point::x = x;
+}
+
+void point::set_y(double y) {
+    point::y = y;
+}
+
+void point::set_z(double z) {
+    point::z = z;
 }

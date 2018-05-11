@@ -1,12 +1,9 @@
 
-#include "math.h"
+#include "cmath"
 #include "dbg.h"
 #include "tracer.h"
-#include "square.h"
-#include "ray.h"
 #include "render.h"
 
-#include <iostream>
 #include <limits>
 #include <boost/progress.hpp>
 
@@ -114,6 +111,10 @@ void tracer::meta_trace() {
 
     point* camera = new point(.5, .5, -5);
 
+
+    boost::progress_display show_progress(length * length);
+
+#pragma omp parallel for num_threads(4)
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < length; j++) {
 
@@ -129,31 +130,68 @@ void tracer::meta_trace() {
             double dist = 0;
             double dist_delta = 0.0001;
 
-            while (dist < 1000) {
+
             // Determine intersection
+            while (dist < 10) {
                 double meta_value = 0;
                 point bullet_loc = bullet->inch_by(dist);
 
                 for (int s = 0; s < num_spheres; s++) {
                     meta_value += this->spheres[s]->meta_value(bullet_loc.get_x(), bullet_loc.get_y(), bullet_loc.get_z());
                 }
+                //debug("Meta: %f", meta_value);
+                if (meta_value > 10) {
+
+                    // Render
+                    point normal(0, 0, 0);
+                    double d = 0.000000001;
+                    double tmp = 0.0;
+
+                    for (int s = 0; s < num_spheres; s++) {
+                        tmp += this->spheres[s]->meta_value(bullet_loc.get_x() + d, bullet_loc.get_y(),
+                                                            bullet_loc.get_z());
+                        tmp -= this->spheres[s]->meta_value(bullet_loc.get_x(), bullet_loc.get_y(), bullet_loc.get_z());
+
+                    }
+                    normal.set_x(tmp);
+
+                    tmp = 0.0;
+                    for (int s = 0; s < num_spheres; s++) {
+                        tmp += this->spheres[s]->meta_value(bullet_loc.get_x(), bullet_loc.get_y() + d,
+                                                            bullet_loc.get_z());
+                        tmp -= this->spheres[s]->meta_value(bullet_loc.get_x(), bullet_loc.get_y(), bullet_loc.get_z());
+                    }
+                    normal.set_y(tmp);
+
+
+                    tmp = 0.0;
+                    for (int s = 0; s < num_spheres; s++) {
+                        tmp += this->spheres[s]->meta_value(bullet_loc.get_x(), bullet_loc.get_y(),
+                                                            bullet_loc.get_z() + d);
+                        tmp -= this->spheres[s]->meta_value(bullet_loc.get_x(), bullet_loc.get_y(), bullet_loc.get_z());
+
+                    }
+                    normal.set_z(tmp);
+
+                    normal.normalize();
+
+
+                    double percent = (normal * *light);
+                    debug("Light percentage %f, %d %d. @dist %f", percent, i, j, dist);
+
+
+                    percent = std::max(0.0, percent);
+                    percent = 0.18 / M_PI * percent * this->li;
+
+                    shade = spheres[0]->get_color() * percent;
+                    break;
+
+
+                }
 
                 dist += dist_delta;
 
-                if (meta_value > 10) {
-                    // Render
-                    point surface = bullet_loc;
 
-                    point normal = closest->get_normal(&surface);
-
-                    double percent = -(normal * *light);
-                    percent = std::max(0.0, percent);
-                    percent = closest->albedo / M_PI * percent * this->li;
-                    //debug("Light percentage %f", percent);
-
-                    shade = closest->get_color() * percent;
-
-                }
             }
 
 
@@ -162,6 +200,7 @@ void tracer::meta_trace() {
             r.set_color(&shade);
             r.set_point(s->get_center().get_x(), s->get_center().get_y());
 
+            ++show_progress;
 
         }
     }
@@ -172,7 +211,6 @@ void tracer::meta_trace() {
 }
 
 void tracer::add_light(point *l, double s) {
-
 
 	this->light = new point(l->get_x(), l->get_y(), l->get_z());
 	this->li = s;
