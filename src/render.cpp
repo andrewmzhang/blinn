@@ -53,6 +53,20 @@ void render::set_color(color *color) {
 	this->b = color->b();
 }
 
+void render::set_point(float x, float y, color *color) {
+
+	if (x > 1 || x < 0 || y > 1 || y < 0) {
+		log_info("Error: set_point invalid!");
+	}
+
+	int point_x = (int) round(x * (height-1));
+	int point_y = (int) round(y * (width-1));
+
+	this->frame[point_x][point_y][0] = color->r();
+	this->frame[point_x][point_y][1] = color->g();
+	this->frame[point_x][point_y][2] = color->b();
+
+}
 void render::set_point(float x, float y) {
 
 	if (x > 1 || x < 0 || y > 1 || y < 0) {

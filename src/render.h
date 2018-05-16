@@ -47,6 +47,7 @@ public:
 
 	void set_color(color* color);
 	void set_point(float x, float y);
+	void set_point(float x, float y, color* color);
 	void set_circle(float x, float y, float radius);
 
 	void set_height(int h);

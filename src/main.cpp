@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 
+#include "dbg.h"
 #include "color.h"
 #include "sphere.h"
 #include "tracer.h"
@@ -9,8 +10,9 @@ using namespace std;
 
 int main() {
 
+    debug("Debug Mode ON!");
 
-    tracer t(100);
+    tracer t(1000);
 
 	sphere s(.5, .5, 1, .25);
     sphere s1(.5, .7, 1, .1);

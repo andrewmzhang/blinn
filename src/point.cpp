@@ -6,6 +6,12 @@
 
 using namespace std;
 
+
+point::point() {
+
+
+}
+
 double point::distance(point* a, point* b) {
 
     double xd = a->x - b->x;

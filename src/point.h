@@ -9,6 +9,8 @@ private:
     double z;
 
 public:
+    
+    point();
     point(double x, double y, double z) : x(x), y(y), z(z) {};
 	static double distance(point* a, point* b);
 	static double distance2(point* a, point* b);
