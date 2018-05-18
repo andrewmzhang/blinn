@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(blinn)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
@@ -30,8 +30,8 @@ add_executable(blinn
         src/sphere.h
         src/square.cpp
         src/square.h
-        src/system.cpp
-        src/system.h
+        src/blobsys.cpp
+        src/blobsys.h
         #src/test.cpp
         src/tracer.cpp
         src/tracer.h)

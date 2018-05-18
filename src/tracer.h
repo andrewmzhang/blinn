@@ -45,5 +45,7 @@ public:
 
     point approx_norm(point pt);
 
+    virtual ~tracer();
+
 };
 #endif

@@ -22,8 +22,7 @@ public:
 
     const char * to_string();
 
-
-
+    virtual ~ray();
 
 
 };

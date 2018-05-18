@@ -11,7 +11,7 @@ private:
 	double x;
 	double y;
 
-	color* value;
+	color value;
 
 	double width;
 

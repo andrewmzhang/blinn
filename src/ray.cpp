@@ -46,8 +46,14 @@ point ray::inch_by(double x) {
     double deltaz = this->vec->get_z();
 
 
-    return point(startx + x * deltax, starty + x * deltay, startz + x * deltaz);
+    return {startx + x * deltax, starty + x * deltay, startz + x * deltaz};
 
 
+
+}
+
+ray::~ray() {
+    delete this->pt;
+    delete this->vec;
 
 }

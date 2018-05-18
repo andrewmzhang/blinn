@@ -44,7 +44,6 @@ bool sphere::intersection(ray *r, double *t, double *u) {
     double d2 = L * L - (ldotvec * ldotvec);
     double radius2 = radius * radius;
     if (d2 > radius2) {
-        debug("miss");
         return false;
     }
     double thc = sqrt(radius2 - d2);
@@ -61,7 +60,6 @@ bool sphere::intersection(ray *r, double *t, double *u) {
     if (t0 < 0) {
 	    t0 = t1;
 	    if (t0 < 0) {
-            debug("behind: %f %f", t0, t1);
 		    return false;
         }
     }
@@ -74,8 +72,8 @@ bool sphere::intersection(ray *r, double *t, double *u) {
 }
 point sphere::get_normal(point *pt) {
 
-	if (point::distance(pt, this->center) - radius > .0001) {
-		log_err("pt does not appear to be on the sphere %f\n", point::distance(pt, this->center));
+	if (point::distance(pt, this->center.get()) - radius > .0001) {
+		log_err("pt does not appear to be on the sphere %f\n", point::distance(pt, this->center.get()));
 	}
 
 
@@ -99,11 +97,9 @@ double sphere::meta_value(double x, double y , double z) {
 }
 
 sphere sphere::bound_radius(double thresh) {
-
     
-    double rad = sqrt(this->radius / thresh);
-    debug("rad: %f", rad);
-    return sphere(this->center->get_x(), this->center->get_y(), this->center->get_z(), rad);
+    double rad = sqrt(radius / thresh);
+    return {this->center->get_x(), this->center->get_y(), this->center->get_z(), rad};
 
 
 }
@@ -120,7 +116,7 @@ color sphere::get_color() {
 
 sphere::sphere(double x, double y, double z, double r) {
 
-    this->center = new point(x, y, z);
+    this->center = std::make_shared<point>(x, y, z);
     this->radius = r;
     this->albedo = .18;
 
@@ -128,17 +124,28 @@ sphere::sphere(double x, double y, double z, double r) {
 
 void sphere::set_color(int r, int g, int b) {
 
-    this->c = new color(r, g, b);
+    this->c = std::make_shared<color>(r, g, b);
 
 
 }
 
 void sphere::set_center(double x, double y, double z) {
 
-    this->center = new point(x, y, z);
+    this->center = std::make_shared<point>(x, y, z);
 
 }
 
 double sphere::meta_value(point p) {
     return this->meta_value(p.get_x(), p.get_y(), p.get_z());
+}
+
+point sphere::get_center() {
+
+    point p(this->center->get_x(), this->center->get_y(), this->center->get_z());
+    return p;
+
+}
+
+sphere::~sphere() {
+
 }

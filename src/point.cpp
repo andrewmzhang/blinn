@@ -93,7 +93,7 @@ point* point::normalize(void) {
 
 point point::operator* (const double& d) {
 
-	return point( d * this->x, d * this->y, d * this->z);
+	return {d * this->x, d * this->y, d * this->z};
 
 }
 

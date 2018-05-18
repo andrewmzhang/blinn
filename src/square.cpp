@@ -32,20 +32,16 @@ void square::set(double width, double x, double y) {
 point square::get_center() {
 	
 
-	point* pt = new point(this->x + (this->width / 2.0), this->y + (this->width / 2.0), 0);
+	point pt(this->x + (this->width / 2.0), this->y + (this->width / 2.0), 0);
 
 
-	return *pt;
+	return pt;
 }
 
 void square::set_value(color* val) {
-	if (this->value == NULL)
-		this->value= new color(0,0,0);
-	
 
-	this->value->set_r(val->r());
-	this->value->set_g(val->g());
-	this->value->set_b(val->b());
-
+	this->value.set_r(val->r());
+	this->value.set_g(val->g());
+	this->value.set_b(val->b());
 
 }

@@ -4,9 +4,13 @@
 #include "render.h"
 #include "sphere.h"
 
-#include <time.h>
+#include <chrono>
 #include <limits>
 #include <boost/progress.hpp>
+#include <memory>
+#include <iostream>
+
+
 
 using namespace std;
 
@@ -49,7 +53,7 @@ void tracer::trace() {
 
 	int length = this->length;
 
-	point* camera = new point(.5, .5, -5);
+	unique_ptr<point> camera = make_unique<point>(.5, .5, -5);
 
 	for (int i = 0; i < length; i++) {
 		for (int j = 0; j < length; j++) {
@@ -60,14 +64,14 @@ void tracer::trace() {
 
 			point vec = center - (*camera);
 
-			ray *bullet = new ray(camera, &vec);
+			unique_ptr<ray> bullet = make_unique<ray>(camera.get(), &vec);
 
 
 			double t_s = numeric_limits<double>::infinity();
 			double t_temp = t_s;
 			geometry* closest = 0;
 			for (int s = 0; s < num_spheres; s++) {
-				if (this->spheres[s]->intersection(bullet, &t_temp) && t_temp < t_s) {
+				if (this->spheres[s]->intersection(bullet.get(), &t_temp) && t_temp < t_s) {
 					t_s = t_temp;
 					closest = this->spheres[s];
 				}
@@ -180,29 +184,30 @@ void tracer::meta_trace() {
 
     int length = this->length;
 
-    time_t start_time;
-    time(&start_time);
-
+    log_info("Starting frame: %d", count);
+    auto start = std::chrono::duration_cast<std::chrono::milliseconds >(std::chrono::system_clock::now().time_since_epoch()).count();
+    this->b_spheres.clear();
     for (sphere* sp: spheres) {
         this->b_spheres.push_back(sp->bound_radius(10.0 / num_spheres));
     }
-    #pragma omp parallel for
+
     for (int i = 0; i < length; i++) {
+        #pragma omp parallel for
         for (int j = 0; j < length; j++) {
             color background(125, 125, 125);
-            point* camera = new point(.5, .5, -5);
-            debug("Starting: %d %d", i, j);
+            unique_ptr<point> camera = make_unique<point>(.5, .5, -5);
             color shade = background;
             point center = this->squares[i][j].get_center();
             point vec = center - (*camera);
-            ray *bullet = new ray(camera, &vec);
+            unique_ptr<ray> bullet = make_unique<ray>(camera.get(), &vec);
 
-            double dist = this->meta_sec(bullet, i, j);
+            double dist = this->meta_sec(bullet.get(), i, j);
             point bullet_loc = bullet->inch_by(dist);
+
 
             // Precondition: bullet_loc is equal to the intersection point
             if (dist > 0) {
-                
+
                 point normal = this->approx_norm(bullet_loc);
                 double percent = (normal * *light);
                 percent = std::max(0.0, percent);
@@ -216,11 +221,11 @@ void tracer::meta_trace() {
             r.set_point(s->get_center().get_x(), s->get_center().get_y(), &shade);
         }
     }
-    
-    printf("\n");
-    time_t end_time;
-    time(&end_time);
-    log_info("Time elapsed: %.fs, %.f px/sec", difftime(end_time, start_time), length * length / difftime(end_time, start_time)); 
+
+    auto end = std::chrono::duration_cast<std::chrono::milliseconds >(std::chrono::system_clock::now().time_since_epoch()).count();
+    double time = ((double) (end - start)) / 1000.0;
+    log_info("Time elapsed: %.3fs, %.3f px/sec", time, length*length / time);
+
     r.print(count, "hello.bmp");
 
     count++;
@@ -230,4 +235,15 @@ void tracer::add_light(point *l, double s) {
 
 	this->light = new point(l->get_x(), l->get_y(), l->get_z());
 	this->li = s;
+}
+
+tracer::~tracer() {
+    delete light;
+
+
+    for (int i = 0; i < length; i++) {
+        delete[] this->squares[i];
+    }
+    delete[] this->squares;
+
 }
