@@ -3,9 +3,25 @@
 
 using namespace std;
 
-blobsys::blobsys(double interval, int n) {
-    this->interval = interval;
-    this->num_spheres = n;
+blobsys::blobsys(config *conf) {
+    this->interval = conf->get_intv();
+    this->num_spheres = conf->get_num_spheres();
+    this->spheres = conf->get_spheres();
+    this->springs = conf->get_springs();
+
+    this->matrix.resize(num_spheres);
+    for (int i = 0; i < num_spheres; i++)
+        matrix[i].resize(num_spheres);
+
+    for (auto spring: springs) {
+        uint8_t i = get<0>(spring);
+        uint8_t j = get<1>(spring);
+        double k = get<2>(spring);
+        matrix[i][j] = k;
+        matrix[j][i] = k;
+    }
+
+    velocity.resize(num_spheres);
 
 }
 
@@ -25,9 +41,8 @@ void blobsys::move() {
     double t_int = get_interval();
 
     for (int i = 0; i < num_spheres; i++) {
-        sphere* sp = spheres[i];
+        sphere *sp = spheres.at(i);
         auto center = sp->get_center() + velocity[i] * t_int;
-
         sp->set_center(center.get_x(), center.get_y(), center.get_z());
         
     }
@@ -63,9 +78,4 @@ void blobsys::add_sphere(sphere *sp) {
 	velocity.push_back(point);
     spheres.push_back(sp);
 
-}
-
-void blobsys::add_matrix(double **matrix) {
-
-	this->matrix = matrix;
 }

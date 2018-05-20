@@ -7,6 +7,7 @@
 #include <vector>
 #include "ray.h"
 #include "sphere.h"
+#include "config.h"
 
 class tracer {
 
@@ -22,7 +23,6 @@ private:
 
     uint32_t length;
 
-
 	double li;
     point light;
 
@@ -31,13 +31,9 @@ private:
 
 public:
 
-    explicit tracer(uint32_t length);
-
-    void add_spheres(sphere *s, uint32_t num);
+    explicit tracer(config *conf);
 
 	void trace();
-
-    void add_light(point l, double str);
 
     void meta_trace();
 

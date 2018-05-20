@@ -3,8 +3,8 @@
 #define __system__
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
 #include "sphere.h"
+#include "config.h"
 
 
 class blobsys {
@@ -16,14 +16,15 @@ private:
 
 	std::vector<sphere*> spheres;
 	std::vector<point> velocity;
+    std::vector<std::tuple<uint8_t, uint8_t, double>> springs;
 
 
-	double** matrix;
+    std::vector<std::vector<double>> matrix;
 
 
 public:
 
-	blobsys(double interval, int n);
+    blobsys(config *conf);
 
 	int get_time() const;
 	double get_interval() const;
@@ -32,7 +33,6 @@ public:
 
 
 	void add_sphere(sphere* sp);
-    void add_matrix(double** matrix);
 
     void move();
 };
