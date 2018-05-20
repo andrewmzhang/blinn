@@ -31,9 +31,9 @@ public:
 
     const color &get_background() const;
 
-    uint8_t get_width() const;
+    uint32_t get_width() const;
 
-    uint8_t get_height() const;
+    uint32_t get_height() const;
 
     std::pair<point, double> get_light() const;
 
@@ -43,8 +43,8 @@ public:
 private:
     std::string path;
 
-    int width;
-    int height;
+    uint32_t width;
+    uint32_t height;
 
     uint32_t num_frames;
     double intv;

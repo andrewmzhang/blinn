@@ -1,7 +1,6 @@
 #include "color.h"
 #include <cmath>
 #include <iostream>
-#include <string>
 #include "render.h"
 #include "dbg.h"
 
@@ -23,6 +22,7 @@ render::render(const int h, const int w) {
                 this->frame[i][j][k] = 0;
         }
     }
+
 
 }
 
@@ -277,7 +277,7 @@ void render::write_bmp_file(int f_number, string output_file_name, unsigned char
         cout << "Error.  Can't open output file " << o_file_name << "." << endl;
         return;
     }
-    cout << "Opening output file " << o_file_name << "." << endl;
+    log_info("Opening output file %s.", o_file_name.c_str());
 
     int rem;
     rem = 3 * px % 4;

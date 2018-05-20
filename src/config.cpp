@@ -80,6 +80,7 @@ void config::parse_line(const std::string &line) {
     } else if (s == "size:") {
 
         iss >> width >> height;
+        log_info("size: %d %d", width, height);
 
     } else if (s == "light:") {
 
@@ -130,11 +131,11 @@ const color &config::get_background() const {
     return background;
 }
 
-uint8_t config::get_width() const {
+uint32_t config::get_width() const {
     return width;
 }
 
-uint8_t config::get_height() const {
+uint32_t config::get_height() const {
     return height;
 }
 

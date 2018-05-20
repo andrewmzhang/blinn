@@ -12,6 +12,7 @@ if (OPENMP_FOUND)
 endif ()
 
 include_directories(src)
+include_directories(include)
 
 add_executable(blinn
         src/color.cpp
