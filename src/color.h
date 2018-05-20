@@ -32,6 +32,8 @@ public:
 
 	color operator*(const double& p);
 
+    color operator+(const color &p);
+
 	static void test();
 	const char* to_string();
 

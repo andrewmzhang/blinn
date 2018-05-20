@@ -1,8 +1,6 @@
 #include <iostream>
 #include "color.h"
 #include "dbg.h"
-#include <sstream>
-#include <string>
 
 using namespace std;
 
@@ -61,6 +59,10 @@ void color::set_rgb(int r, int g, int b) {
 
 color color::operator*(const double& p) {
 	return color(this->r() * p, this->g() * p, this->b() * p);
+}
+
+color color::operator+(const color &p) {
+    return color(this->r() + p.r(), this->g() + p.g(), this->b() + p.b());
 }
 
 const char* color::to_string(void) {

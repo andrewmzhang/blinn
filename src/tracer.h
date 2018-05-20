@@ -13,39 +13,36 @@ class tracer {
 
 private:
 
-	int count;
+    uint32_t count;
 
-	square** squares;
+    std::vector<std::vector<square>> squares;
 	std::vector<sphere*> spheres;
     std::vector<sphere> b_spheres;
-    int num_spheres;
+    uint32_t num_spheres;
 
-	int length;
+    uint32_t length;
+
+
 	double li;
-	point *light;
+    point light;
 
 
-    double meta_sec(ray* ray, int i, int j);
+    double meta_sec(ray *ray, uint32_t i, uint32_t j, double &meta);
 
 public:
 
-	tracer (int length);
+    explicit tracer(uint32_t length);
 
-	void add_spheres(sphere* s, int num);
+    void add_spheres(sphere *s, uint32_t num);
 
 	void trace();
 
-	void inch_trace();
-
-	void clean();
-
-	void add_light(point *l, double str);
+    void add_light(point l, double str);
 
     void meta_trace();
 
     point approx_norm(point pt);
 
-    virtual ~tracer();
 
 };
 #endif

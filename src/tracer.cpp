@@ -2,30 +2,23 @@
 #include "dbg.h"
 #include "tracer.h"
 #include "render.h"
-#include "sphere.h"
 
 #include <chrono>
-#include <limits>
 #include <boost/progress.hpp>
-#include <memory>
-#include <iostream>
-
 
 
 using namespace std;
 
-tracer::tracer(int length) {
+tracer::tracer(uint32_t length) {
 	this->length = length;
-	this->squares = new square*[length];
+    this->squares.resize(length);
 	this->num_spheres = 0;
 	this->count = 0;
-
-
 
 	double sq_width = 1.0 / length;
 	for (int i = 0; i < length; i++) {
 
-		this->squares[i]  = new square[length];
+        this->squares[i].resize(length);
 		for (int j = 0; j < length; j++) {
 
 			this->squares[i][j].set(sq_width, i*sq_width, j*sq_width);
@@ -37,7 +30,7 @@ tracer::tracer(int length) {
 }
 
 
-void tracer::add_spheres(sphere* s, int n) {
+void tracer::add_spheres(sphere *s, uint32_t n) {
 	for (int i = 0; i < n; i++) {
 		this->spheres.push_back(s + i);
     }
@@ -83,7 +76,7 @@ void tracer::trace() {
 
 				point normal = closest->get_normal(&surface);
 
-				double percent = -(normal * *light);
+                double percent = -(normal * light);
 				percent = std::max(0.0, percent);
 				percent = closest->albedo / M_PI * percent * this->li;
 				//debug("Light percentage %f", percent);
@@ -107,7 +100,7 @@ void tracer::trace() {
 }
 
 
-double tracer::meta_sec(ray* bullet, int i, int j) {
+double tracer::meta_sec(ray *bullet, uint32_t i, uint32_t j, double &meta) {
 
     // Determine intersection
     double t_s = numeric_limits<double>::infinity();
@@ -135,6 +128,8 @@ double tracer::meta_sec(ray* bullet, int i, int j) {
         for (geometry* s : this->spheres) {
             meta_value += s->meta_value(bullet->inch_by(dist));
         }
+
+        meta = meta_value;
         if (meta_value > 10)
             return dist;
 
@@ -201,18 +196,28 @@ void tracer::meta_trace() {
             point vec = center - (*camera);
             unique_ptr<ray> bullet = make_unique<ray>(camera.get(), &vec);
 
-            double dist = this->meta_sec(bullet.get(), i, j);
-            point bullet_loc = bullet->inch_by(dist);
 
+            double meta;
+            double dist = this->meta_sec(bullet.get(), i, j, meta);
+            point bullet_loc = bullet->inch_by(dist);
 
             // Precondition: bullet_loc is equal to the intersection point
             if (dist > 0) {
 
                 point normal = this->approx_norm(bullet_loc);
-                double percent = (normal * *light);
+                double percent = (normal * light);
                 percent = std::max(0.0, percent);
                 percent = 0.18 / M_PI * percent * this->li;
-                shade = spheres[0]->get_color() * percent;
+
+                color mix;
+
+                for (auto sp : spheres) {
+                    double sp_meta = sp->meta_value(bullet_loc);
+                    mix = mix + sp->get_color() * (sp_meta / meta);
+                }
+
+
+                shade = mix * percent;
 
             }
 
@@ -231,19 +236,8 @@ void tracer::meta_trace() {
     count++;
 }
 
-void tracer::add_light(point *l, double s) {
+void tracer::add_light(point l, double s) {
 
-	this->light = new point(l->get_x(), l->get_y(), l->get_z());
+    this->light = l;
 	this->li = s;
-}
-
-tracer::~tracer() {
-    delete light;
-
-
-    for (int i = 0; i < length; i++) {
-        delete[] this->squares[i];
-    }
-    delete[] this->squares;
-
 }

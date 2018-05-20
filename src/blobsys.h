@@ -12,7 +12,7 @@ class blobsys {
 private:
 	int time;
 	double interval;
-	int n;
+    int num_spheres;
 
 	std::vector<sphere*> spheres;
 	std::vector<point> velocity;
@@ -27,7 +27,9 @@ public:
 
 	int get_time() const;
 	double get_interval() const;
-	int get_n() const;
+
+    int get_numspheres() const;
+
 
 	void add_sphere(sphere* sp);
     void add_matrix(double** matrix);

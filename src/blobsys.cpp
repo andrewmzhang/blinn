@@ -1,13 +1,11 @@
 #include <iostream>
 #include "blobsys.h"
-#include "dbg.h"
-#include <sstream>
 
 using namespace std;
 
 blobsys::blobsys(double interval, int n) {
     this->interval = interval;
-    this->n = n;
+    this->num_spheres = n;
 
 }
 
@@ -19,14 +17,14 @@ double blobsys::get_interval(void) const {
 	return this->interval;
 }
 
-int blobsys::get_n(void) const {
-	return this->n;
+int blobsys::get_numspheres(void) const {
+    return this->num_spheres;
 }
 
 void blobsys::move() {
     double t_int = get_interval();
-    
-    for (int i = 0; i < n; i++) {
+
+    for (int i = 0; i < num_spheres; i++) {
         sphere* sp = spheres[i];
         auto center = sp->get_center() + velocity[i] * t_int;
 
@@ -34,9 +32,9 @@ void blobsys::move() {
         
     }
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < num_spheres; i++) {
         point accel_vec(0,0,0);
-        for (int j = 0; j < n; j++) {
+        for (int j = 0; j < num_spheres; j++) {
             if (i == j)
                 continue;
 
