@@ -42,6 +42,7 @@ void tracer::meta_trace(scene &scene) {
     auto start = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch()).count();
 
+    this->b_spheres.clear();
     for (auto &sp : spheres) {
         b_spheres.push_back(sp.bound_radius(10.0 / num_spheres));
     }
