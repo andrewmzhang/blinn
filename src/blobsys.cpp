@@ -37,7 +37,9 @@ int blobsys::get_numspheres(void) const {
     return this->num_spheres;
 }
 
-void blobsys::move() {
+scene blobsys::move(config &conf) {
+
+
     double t_int = get_interval();
 
     for (int i = 0; i < num_spheres; i++) {
@@ -68,6 +70,14 @@ void blobsys::move() {
         curr_vel = curr_vel + accel_vec * t_int;
         velocity[i] = curr_vel;
     }
+
+    scene scene1;
+    scene1.set_spheres(this->spheres);
+    scene1.set_light(conf.get_light().first);
+    scene1.set_li(conf.get_light().second);
+    scene1.set_count(count++);
+
+    return std::move(scene1);
 
 
 }

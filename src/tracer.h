@@ -8,37 +8,35 @@
 #include "ray.h"
 #include "sphere.h"
 #include "config.h"
+#include "scene.h"
 
 class tracer {
 
 
 private:
 
-    uint32_t count;
-
     std::vector<std::vector<square>> squares;
-	std::vector<sphere*> spheres;
-    std::vector<sphere> b_spheres;
-    uint32_t num_spheres;
-
     uint32_t length;
-
-	double li;
-    point light;
 
 
     double meta_sec(ray *ray, uint32_t i, uint32_t j, double &meta);
 
+    point approx_norm(point pt);
+
+    std::vector<sphere> spheres;
+    std::vector<sphere> b_spheres;
+    uint32_t num_spheres;
+    point light;
+    double li;
+
+    uint32_t count;
+
 public:
 
     explicit tracer(config *conf);
-
 	void trace();
 
-    void meta_trace();
-
-    point approx_norm(point pt);
-
+    void meta_trace(scene &scene);
 
 };
 #endif

@@ -35,4 +35,4 @@ add_executable(blinn
         src/blobsys.h
         #src/test.cpp
         src/tracer.cpp
-        src/tracer.h src/config.cpp src/config.h)
+        src/tracer.h src/config.cpp src/config.h src/scene.cpp src/scene.h)

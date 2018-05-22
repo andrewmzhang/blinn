@@ -35,6 +35,10 @@ bool sphere::intersection(ray *r, double *t) {
 
 }
 
+double sphere::get_radius() {
+    return this->radius;
+}
+
 bool sphere::intersection(ray *r, double *t, double *u) {
 
 
@@ -146,6 +150,7 @@ point sphere::get_center() {
 
 }
 
-sphere::~sphere() {
+void sphere::set_color(color c) {
 
+    this->set_color(c.r(), c.g(), c.b());
 }

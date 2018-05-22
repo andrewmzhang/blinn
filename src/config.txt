@@ -3,7 +3,7 @@ sphere: .4 .4 1.00 .15 125 0 0
 sphere: .7 .6 1.25 0.1 0 125 0
 sphere: .1 .5 0.77 .2  0 0 125
 num_frames: 10
-interval: 0.03333
+interval: 1
 background: 125 125 125
 size: 500 500
 light: 0.5 0.5 0.5 50

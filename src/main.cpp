@@ -12,7 +12,7 @@ int main() {
 
     debug("Debug Mode ON!");
 
-    config conf("/home/camus/code/blinn/src/config.txt");
+    config conf("C:\\Users\\andrewmzhang\\CLionProjects\\blinn\\src\\config.txt");
 
     tracer t(&conf);
 
@@ -21,8 +21,8 @@ int main() {
 
     for (int i = 0; i < conf.get_num_frames(); i++) {
 
-        sys.move();
-        t.meta_trace();
+        scene s = sys.move(conf);
+        t.meta_trace(s);
     }
 
 

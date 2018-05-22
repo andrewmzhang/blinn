@@ -5,6 +5,7 @@
 #include <vector>
 #include "sphere.h"
 #include "config.h"
+#include "scene.h"
 
 
 class blobsys {
@@ -21,6 +22,7 @@ private:
 
     std::vector<std::vector<double>> matrix;
 
+    uint32_t count = 0;
 
 public:
 
@@ -34,7 +36,7 @@ public:
 
 	void add_sphere(sphere* sp);
 
-    void move();
+    scene move(config &conf);
 };
 
 #endif

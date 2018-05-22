@@ -21,8 +21,12 @@ protected:
 public:
 
     point get_center();
+
+    double get_radius();
     sphere(double x, double y, double z, double r);
     void set_color(int r, int g, int b);
+
+    void set_color(color c);
 
     bool intersection(ray *r, double* t) override;
     bool intersection(ray *r, double* t, double* u);
@@ -38,7 +42,6 @@ public:
 
     sphere bound_radius(double k);
 
-    virtual ~sphere();
 };
 
 
