@@ -72,7 +72,7 @@ void config::parse_line(const std::string &line) {
     } else if (s == "interval:") {
         iss >> intv;
     } else if (s == "num_frames:") {
-        iss >> this->num_frames;
+        iss >> this->start_frame >> this->end_frame;
     } else if (s == "background:") {
         int r, g, b;
         iss >> r >> g >> b;
@@ -115,8 +115,12 @@ uint32_t config::get_num_spheres() const {
     return num_spheres;
 }
 
-uint32_t config::get_num_frames() const {
-    return num_frames;
+uint32_t config::get_end_frame() const {
+    return end_frame;
+}
+
+uint32_t config::get_start_frame() const {
+    return start_frame;
 }
 
 const std::vector<sphere *> &config::get_spheres() const {

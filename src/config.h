@@ -19,7 +19,9 @@ public:
 
     void parse_line(const std::string &line);
 
-    uint32_t get_num_frames() const;
+    uint32_t get_end_frame() const;
+
+    uint32_t get_start_frame() const;
 
     double get_intv() const;
 
@@ -46,7 +48,10 @@ private:
     uint32_t width;
     uint32_t height;
 
-    uint32_t num_frames;
+    uint32_t start_frame;
+    uint32_t end_frame;
+
+
     double intv;
     uint32_t num_spheres;
     std::vector<sphere *> spheres;

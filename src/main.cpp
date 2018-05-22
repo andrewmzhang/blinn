@@ -19,10 +19,11 @@ int main() {
     blobsys sys(&conf);
 
 
-    for (int i = 0; i < conf.get_num_frames(); i++) {
+    for (int i = 0; i < conf.get_end_frame(); i++) {
 
         scene s = sys.move(conf);
-        t.meta_trace(s);
+        if (i >= conf.get_start_frame())
+            t.meta_trace(s);
     }
 
 
