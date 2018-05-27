@@ -2,12 +2,12 @@
 #define __tracer_h__
 
 
-#include "square.h"
-#include "geometry.h"
+#include "basics/square.h"
+#include "basics/geometry.h"
 #include <vector>
-#include "ray.h"
-#include "sphere.h"
-#include "config.h"
+#include "basics/ray.h"
+#include "renderables/sphere.h"
+#include "utils/config.h"
 #include "scene.h"
 
 class tracer {

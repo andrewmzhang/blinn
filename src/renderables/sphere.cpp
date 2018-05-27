@@ -1,6 +1,6 @@
 #include "sphere.h"
 #include <cmath>
-#include "dbg.h"
+#include "utils/dbg.h"
 
 bool sphere::intersection(ray *r, double *t) {
 

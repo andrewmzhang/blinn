@@ -7,7 +7,7 @@
 #ifndef __render_h__
 #define __render_h__
 
-#include "color.h"
+#include "basics/color.h"
 
 
 #include <iostream>

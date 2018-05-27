@@ -1,6 +1,6 @@
 
 
-#include <math.h>
+#include <cmath>
 
 #include "ray.h"
 
