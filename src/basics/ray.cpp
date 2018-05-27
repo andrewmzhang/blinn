@@ -1,8 +1,5 @@
 #include "ray.h"
-#include "point.h"
 #include <sstream>
-#include <iostream>
-#include <stdio.h>
 
 
 using namespace std;

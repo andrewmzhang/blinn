@@ -7,8 +7,8 @@
 
 
 #include <vector>
-#include "sphere.h"
-#include "config.h"
+#include "renderables/sphere.h"
+#include "utils/config.h"
 
 class scene {
 

@@ -3,9 +3,9 @@
 #define __system__
 #include <string>
 #include <vector>
-#include "sphere.h"
-#include "config.h"
-#include "scene.h"
+#include "renderables/sphere.h"
+#include "utils/config.h"
+#include "rendersys/scene.h"
 
 
 class blobsys {

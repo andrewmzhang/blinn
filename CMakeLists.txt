@@ -15,24 +15,24 @@ include_directories(src)
 include_directories(include)
 
 add_executable(blinn
-        src/color.cpp
-        src/color.h
-        src/dbg.h
-        src/geometry.cpp
-        src/geometry.h
+        src/basics/color.cpp
+        src/basics/color.h
+        src/utils/dbg.h
+        src/basics/geometry.cpp
+        src/basics/geometry.h
         src/main.cpp
-        src/point.cpp
-        src/point.h
-        src/ray.cpp
-        src/ray.h
-        src/render.cpp
-        src/render.h
-        src/sphere.cpp
-        src/sphere.h
-        src/square.cpp
-        src/square.h
-        src/blobsys.cpp
-        src/blobsys.h
+        src/basics/point.cpp
+        src/basics/point.h
+        src/basics/ray.cpp
+        src/basics/ray.h
+        src/rendersys/render.cpp
+        src/rendersys/render.h
+        src/renderables/sphere.cpp
+        src/renderables/sphere.h
+        src/basics/square.cpp
+        src/basics/square.h
+        src/physics/blobsys.cpp
+        src/physics/blobsys.h
         #src/test.cpp
-        src/tracer.cpp
-        src/tracer.h src/config.cpp src/config.h src/scene.cpp src/scene.h)
+        src/rendersys/tracer.cpp
+        src/rendersys/tracer.h src/utils/config.cpp src/utils/config.h src/rendersys/scene.cpp src/rendersys/scene.h)

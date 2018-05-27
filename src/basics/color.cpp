@@ -1,6 +1,6 @@
 #include <iostream>
 #include "color.h"
-#include "dbg.h"
+#include "utils/dbg.h"
 
 using namespace std;
 

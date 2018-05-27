@@ -1,5 +1,5 @@
 #include "cmath"
-#include "dbg.h"
+#include "utils/dbg.h"
 #include "tracer.h"
 #include "render.h"
 #include <chrono>

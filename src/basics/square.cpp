@@ -1,6 +1,5 @@
 #include "color.h"
 #include "square.h"
-#include "point.h"
 
 square::square() {
 	this->x = 0;

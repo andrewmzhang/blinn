@@ -1,10 +1,10 @@
 #include <string>
 #include <iostream>
 
-#include "dbg.h"
-#include "sphere.h"
-#include "tracer.h"
-#include "blobsys.h"
+#include "utils/dbg.h"
+#include "renderables/sphere.h"
+#include "rendersys/tracer.h"
+#include "physics/blobsys.h"
 
 using namespace std;
 

@@ -2,10 +2,10 @@
 #define __sphere_h__
 
 #include <memory>
-#include "point.h"
-#include "ray.h"
-#include "geometry.h"
-#include "color.h"
+#include "basics/point.h"
+#include "basics/ray.h"
+#include "basics/geometry.h"
+#include "basics/color.h"
 
 class sphere: public geometry {
 

@@ -1,8 +1,8 @@
-#include "color.h"
+#include "basics/color.h"
 #include <cmath>
 #include <iostream>
 #include "render.h"
-#include "dbg.h"
+#include "utils/dbg.h"
 
 using namespace std;
 
