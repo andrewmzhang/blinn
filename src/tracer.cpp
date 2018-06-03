@@ -2,6 +2,8 @@
 #include "dbg.h"
 #include "tracer.h"
 #include "render.h"
+#include <memory>
+#include <iostream>
 #include <chrono>
 
 using namespace std;

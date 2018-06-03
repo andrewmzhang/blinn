@@ -12,7 +12,7 @@ int main() {
 
     debug("Debug Mode ON!");
 
-    config conf("C:\\Users\\andrewmzhang\\CLionProjects\\blinn\\src\\config.txt");
+    config conf("/home/caesar/code/blinn/src/config.txt");
 
     tracer t(&conf);
 
