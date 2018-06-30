@@ -112,6 +112,8 @@ double tracer::meta_sec(ray *bullet, uint32_t i, uint32_t j, double &meta) {
     double t_s = numeric_limits<double>::infinity();
     double t_temp = t_s;
 
+
+    // Check the bounding sphere for possible intersection
     double t1_s = -numeric_limits<double>::infinity();
     double t1_temp = t1_s;
     geometry *closest = nullptr;
@@ -124,10 +126,14 @@ double tracer::meta_sec(ray *bullet, uint32_t i, uint32_t j, double &meta) {
             closest = &this->spheres[s];
         }
     }
+
+
+    // If true, bounding sphere not hit
     if (closest == nullptr) {
         return -1;
     }
 
+    // Bounding sphere was hit
     double dist = t_s;
     while (dist < t1_s) {
         double meta_value = 0.0;
@@ -148,7 +154,7 @@ double tracer::meta_sec(ray *bullet, uint32_t i, uint32_t j, double &meta) {
 
 point tracer::approx_norm(point bullet_loc) {
     point normal(0, 0, 0);
-    double d = 0.000000001;
+    double d = 0.00001;
     double tmp = 0.0;
 
     for (int s = 0; s < num_spheres; s++) {
