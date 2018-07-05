@@ -94,6 +94,10 @@ void config::parse_line(const std::string &line) {
         light.second = i;
 
 
+    } else if (s == "gpu:") {
+
+        iss >> gpu;
+         
     } else {
         throw std::runtime_error(std::string("No such thing as: ") + s);
     }
@@ -144,7 +148,9 @@ uint32_t config::get_height() const {
 }
 
 std::pair<point, double> config::get_light() const {
-
     return light;
-
 };
+
+bool config::get_gpu() const {
+    return gpu;
+}

@@ -1,16 +1,38 @@
 #include <string>
 #include <iostream>
+#include <cmath>
+
+#include <cuda_runtime_api.h>
+#include <device_launch_parameters.h>
+
 
 #include "dbg.h"
 #include "sphere.h"
 #include "tracer.h"
 #include "blobsys.h"
 
+
+
+
+
 using namespace std;
+
+__global__
+void add(int n, float* x, float *y) {
+
+
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+
+    for (int i = index; i < n; i += stride)
+        y[i] = x[i] + y[i];
+}
+
 
 int main() {
 
-    debug("Debug Mode ON!");
+    //debug("Debug Mode ON!");
+
 
     config conf("/home/caesar/code/blinn/src/config.txt");
 
@@ -27,5 +49,5 @@ int main() {
     }
 
 
-	return 0;
+    return 0;
 }

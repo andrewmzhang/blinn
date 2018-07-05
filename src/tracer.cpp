@@ -5,7 +5,7 @@
 #include <memory>
 #include <iostream>
 #include <chrono>
-
+#include "sphere.h"
 using namespace std;
 
 tracer::tracer(config *conf) {
@@ -16,17 +16,16 @@ tracer::tracer(config *conf) {
 
     double sq_width = 1.0 / length;
     for (int i = 0; i < length; i++) {
-
         this->squares[i].resize(length);
         for (int j = 0; j < length; j++) {
-
             this->squares[i][j].set(sq_width, i * sq_width, j * sq_width);
-
         }
     }
 
 
 }
+
+
 
 void tracer::meta_trace(scene &scene) {
 
@@ -49,9 +48,8 @@ void tracer::meta_trace(scene &scene) {
         b_spheres.push_back(sp.bound_radius(10.0 / num_spheres));
     }
 
-    fflush(stderr);
-
-#pragma omp parallel for schedule(static, 500)
+// I want to move this to the gpu
+// need to move r, b_sheres
     for (int iter = 0; iter < length * length; iter++) {
 
         int i = iter / length;
