@@ -10,15 +10,18 @@
 class sphere: public geometry {
 
 protected:
-    std::shared_ptr<point> center;
-    double radius;
-	std::shared_ptr<color> c;
-    double k;
 
     bool meta;
 
 
 public:
+    
+	double radius;
+    double k;
+
+    
+	point center;
+	color c;
 
     point get_center();
 

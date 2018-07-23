@@ -54,7 +54,7 @@ add_executable(blinn
         src/square.h
         src/blobsys.cpp
         src/blobsys.h
-        src/tracer.cpp
+        src/tracer.cu
         src/tracer.h
         src/config.cpp
         src/config.h
@@ -63,4 +63,4 @@ add_executable(blinn
         src/Computation.cu
         src/Computation.cuh
         )
-set_property(TARGET blinn PROPERTY CUDA_STANDARD 11)
+set_property(TARGET blinn PROPERTY CUDA_STANDARD 14)

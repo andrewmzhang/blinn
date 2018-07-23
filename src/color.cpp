@@ -4,6 +4,13 @@
 
 using namespace std;
 
+__device__
+color::color(int k) {
+
+
+}
+
+
 color::color(int r, int g, int b) :R(r), G(g), B(b) {
 
 	normalize();

@@ -2,9 +2,6 @@
 #include <iostream>
 #include <cmath>
 
-#include <cuda_runtime_api.h>
-#include <device_launch_parameters.h>
-
 
 #include "dbg.h"
 #include "sphere.h"
