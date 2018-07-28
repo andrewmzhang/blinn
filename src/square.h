@@ -3,7 +3,7 @@
 
 
 #include "point.h"
-#include "color.h"
+#include "color.cuh"
 
 class square {
 

@@ -5,7 +5,7 @@
 #include "point.h"
 #include "ray.h"
 #include "geometry.h"
-#include "color.h"
+#include "color.cuh"
 
 class sphere: public geometry {
 

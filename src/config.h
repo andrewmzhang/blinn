@@ -9,7 +9,7 @@
 #include <tuple>
 #include <string>
 #include <vector>
-#include "color.h"
+#include "color.cuh"
 #include "sphere.h"
 
 class config {

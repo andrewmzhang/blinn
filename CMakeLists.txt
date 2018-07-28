@@ -7,12 +7,12 @@ set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda-9.0")
 find_package(OpenMP)
 
 
-if (OPENMP_FOUND)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS} -DNDEBUG")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-endif ()
+#if (OPENMP_FOUND)
+#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+#    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+#    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS} -DNDEBUG")
+#    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+#endif ()
 find_package(CUDA REQUIRED)
 
 include_directories(src)
@@ -36,8 +36,8 @@ ADD_TEST (basic_test UnitTests)
 #cuda_add_executable(blinn src/main.cu)
 
 add_executable(blinn
-        src/color.cpp
-        src/color.h
+        src/color.cu
+        src/color.cuh
         src/dbg.h
         src/geometry.cpp
         src/geometry.h

@@ -1,4 +1,4 @@
-#include "color.h"
+#include "color.cuh"
 #include <cmath>
 #include <iostream>
 #include "render.h"

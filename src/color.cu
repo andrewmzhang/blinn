@@ -1,5 +1,5 @@
 #include <iostream>
-#include "color.h"
+#include "color.cuh"
 #include "dbg.h"
 
 using namespace std;

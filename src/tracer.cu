@@ -25,9 +25,77 @@ tracer::tracer(config *conf) {
 
 
 }
+
+
+struct gpoint {
+
+	double x;
+	double y;
+	double z;
+
+};
+
+typedef struct gray {
+
+	gpoint pt;
+	gpoint vec;
+
+} gray;
+
+__device__
+double dot_product(const gpoint& a, const gpoint& b) {
+
+	return a.x*b.x + a.y*b.y + a.z*b.z;
+}
+
+__device__
+gpoint normalize(gpoint& a) {
+	double denom = sqrt(dot_product(a, a));
+	return {a.x / denom, a.y/denom, a.z/denom};
+}
+
+
+
+__device__
+bool intersection(sphere& s, gray& r, double* t, double* u) {
+
+	gpoint L = {s.center.x - r.pt.x, s.center.y - r.pt.y, s.center.z - r.pt.z};
+
+	double ldotvec = dot_product(L, normalize(r.vec));
+	
+	double d2 = dot_product(L, L) - (ldotvec * ldotvec);
+	double radius2 = s.radius * s.radius;
+
+	if (d2 > radius2) return false;
+	double thc = sqrt(radius2 - d2);
+
+	double t0 = ldotvec - thc;
+	double t1 = ldotvec + thc;
+
+	if (t0 > t1) {
+		double temp = t0;
+		t0 = t1;
+		t1 = temp;
+	}
+
+	if (t0 < 0) {
+		t0 = t1;
+		if (t0 < 0)
+			return false;
+	}
+
+	*t = t0;
+
+	return true;
+
+}
+
+
+
+
 __device__
 double meta_sec(sphere* spheres, sphere* b_spheres, int num_spheres, 
-		ray *bullet, 
+		gray bullet, 
 		uint32_t i, uint32_t j, 
 		double &meta) {
 
@@ -39,7 +107,7 @@ double meta_sec(sphere* spheres, sphere* b_spheres, int num_spheres,
     double t1_temp = t1_s;
     geometry *closest = nullptr;
     for (int s = 0; s < num_spheres; s++) {
-        if (b_spheres[s].intersection(bullet, &t_temp, &t1_temp)) {
+        if (intersection(b_spheres[s], bullet, &t_temp, &t1_temp)) {
             if (t_temp < t_s)
                 t_s = t_temp;
             if (t1_temp > t1_s)
@@ -55,11 +123,11 @@ double meta_sec(sphere* spheres, sphere* b_spheres, int num_spheres,
     while (dist < t1_s) {
         double meta_value = 0.0;
         for (int i = 0; i < num_spheres; i++)  {
-			sphere sp = spheres[i];
+			sphere& sp = spheres[i];
 			
-			double x = bullet->pt->x + (dist * bullet->vec->x);
-			double y = bullet->pt->y + (dist * bullet->vec->y);
-			double z = bullet->pt->z + (dist * bullet->vec->z);
+			double x = bullet.pt.x + (dist * bullet.vec.x);
+			double y = bullet.pt.y + (dist * bullet.vec.y);
+			double z = bullet.pt.z + (dist * bullet.vec.z);
 
 			double radius = sp.radius;
 
@@ -133,6 +201,21 @@ thrust::tuple<double, double, double> approx_norm(double bx, double by, double b
 }
 
 
+__device__
+gpoint inch_by(gray b, double x) {
+	
+	double startx = b.pt.x;
+	double starty = b.pt.y;
+	double startz = b.pt.z;
+
+	double deltax = b.vec.x;
+	double deltay = b.vec.y;
+	double deltaz = b.vec.z;
+
+
+	return {startx + x * deltax, starty + x * deltay, startz + x * deltaz};
+}
+
 
 __global__
 void gpu_meta_trace(
@@ -151,17 +234,19 @@ void gpu_meta_trace(
 		int backgroundR = 0;
 		int backgroundG = 0;
 		int backgroundB = 0;
-        unique_ptr<point> camera = make_unique<point>(.5, .5, -5);
+        gpoint camera = {.5, .5, -5};
         point center = centers[iter];
-        point vec = center - (*camera);
-        unique_ptr<ray> bullet = make_unique<ray>(camera.get(), &vec);
+		gpoint vec = {center.x - camera.x, center.y - camera.y, center.z - camera.z};
+
 
 
         double meta;
-        double dist = meta_sec(spheres, b_spheres, num_spheres, bullet.get(), i, j, meta);
+		gpoint nvec = normalize(vec);
+		gray gbullet = {camera, nvec};
+        double dist = meta_sec(spheres, b_spheres, num_spheres, gbullet, i, j, meta);
 		
 
-        point bullet_loc = bullet->inch_by(dist);
+        gpoint bullet_loc = inch_by(gbullet, dist);
         // Precondition: bullet_loc is equal to the intersection point
         if (dist > 0) {
 			
@@ -179,7 +264,7 @@ void gpu_meta_trace(
 			double mixB = 0;
 
             for (int i = 0; i < num_spheres; i++) {
-				sphere sp = spheres[i];
+				sphere& sp = spheres[i];
 				double x = bullet_loc.x;
 				double y = bullet_loc.y;
 				double z = bullet_loc.z;
@@ -253,13 +338,25 @@ void tracer::meta_trace(scene &scene) {
 	sphere* gpu_b_spheres;
 	point* gpu_centers;
 
-	cudaMallocManaged(&gpu_spheres, num_spheres * sizeof(sphere));
+	std::cout << num_spheres<< " " << sizeof(sphere) <<  std::endl;
+
+
+	cudaDeviceSynchronize();
+	cudaMallocManaged(&gpu_spheres, num_spheres*sizeof(sphere));
 	cudaMallocManaged(&gpu_b_spheres, num_spheres * sizeof(sphere));
 	cudaMallocManaged(&gpu_centers, (length * length) * sizeof(point));
-
-	std::memcpy(gpu_spheres, spheres.data(), num_spheres * sizeof(sphere));
+	cudaDeviceSynchronize();
+	std::cout << spheres.data() << std::endl;
+	
+	for (int i = 0; i < num_spheres; i++) {
+		sphere s = spheres[i];
+		std::cout << s.radius << std::endl;
+		gpu_spheres[i] = s;
+	}
+	
 	std::memcpy(gpu_b_spheres, b_spheres.data(), num_spheres * sizeof(sphere));
 	std::memcpy(gpu_centers, centers_flat, (length * length) * sizeof(point));
+	cudaDeviceSynchronize();
 	
 	gpu_meta_trace<<<1, 1>>>(
 		gpu_spheres, num_spheres,
@@ -267,55 +364,8 @@ void tracer::meta_trace(scene &scene) {
 		gpu_b_spheres, b_spheres.size(), 
 		gpu_centers, r, length);
 
-	delete[] centers_flat;
+	cudaDeviceSynchronize();
 
-// I want to move this to the gpu
-// need to move r, b_sheres
-/*
-    for (int iter = 0; iter < length * length; iter++) {
-
-        int i = iter / length;
-        int j = iter % length;
-
-        color background(125, 125, 125);
-        unique_ptr<point> camera = make_unique<point>(.5, .5, -5);
-        color shade = background;
-        point center = this->squares[i][j].get_center();
-        point vec = center - (*camera);
-        unique_ptr<ray> bullet = make_unique<ray>(camera.get(), &vec);
-
-
-        double meta;
-        double dist = this->meta_sec(bullet.get(), i, j, meta);
-        point bullet_loc = bullet->inch_by(dist);
-
-        // Precondition: bullet_loc is equal to the intersection point
-        if (dist > 0) {
-
-            point normal = this->approx_norm(bullet_loc);
-            double percent = (normal * light);
-            percent = std::max(0.0, percent);
-            percent = 0.18 / M_PI * percent * li;
-
-            color mix;
-
-            for (auto sp : spheres) {
-                double sp_meta = sp.meta_value(bullet_loc);
-                mix = mix + sp.get_color() * (sp_meta / meta);
-            }
-
-
-            shade = mix * percent;
-
-        }
-
-        square *s = &this->squares[i][j];
-        r.set_point(s->get_center().get_x(), s->get_center().get_y(), &shade);
-
-    }
-	*/
-
-	// End of tracing code
 
     auto end = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch()).count();
@@ -325,7 +375,13 @@ void tracer::meta_trace(scene &scene) {
     fflush(stderr);
 
     r.print(count, "hello.bmp");
-
+	
+	delete[] centers_flat;
+	cudaFree(gpu_spheres);
+	cudaFree(gpu_b_spheres);
+	cudaFree(gpu_centers);
+	cudaDeviceSynchronize();
+	log_info("Finished frame");
     count++;
 }
 
@@ -461,3 +517,51 @@ void tracer::trace() {
 
     count++;
 }
+
+// I want to move this to the gpu
+// need to move r, b_sheres
+/*
+    for (int iter = 0; iter < length * length; iter++) {
+
+        int i = iter / length;
+        int j = iter % length;
+
+        color background(125, 125, 125);
+        unique_ptr<point> camera = make_unique<point>(.5, .5, -5);
+        color shade = background;
+        point center = this->squares[i][j].get_center();
+        point vec = center - (*camera);
+        unique_ptr<ray> bullet = make_unique<ray>(camera.get(), &vec);
+
+
+        double meta;
+        double dist = this->meta_sec(bullet.get(), i, j, meta);
+        point bullet_loc = bullet->inch_by(dist);
+
+        // Precondition: bullet_loc is equal to the intersection point
+        if (dist > 0) {
+
+            point normal = this->approx_norm(bullet_loc);
+            double percent = (normal * light);
+            percent = std::max(0.0, percent);
+            percent = 0.18 / M_PI * percent * li;
+
+            color mix;
+
+            for (auto sp : spheres) {
+                double sp_meta = sp.meta_value(bullet_loc);
+                mix = mix + sp.get_color() * (sp_meta / meta);
+            }
+
+
+            shade = mix * percent;
+
+        }
+
+        square *s = &this->squares[i][j];
+        r.set_point(s->get_center().get_x(), s->get_center().get_y(), &shade);
+
+    }
+	*/
+
+	// End of tracing code
