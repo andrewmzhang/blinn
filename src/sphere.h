@@ -11,10 +11,10 @@ class sphere: public geometry {
 
 protected:
 
-    bool meta;
 
 
 public:
+    bool meta;
     
 	double radius;
     double k;

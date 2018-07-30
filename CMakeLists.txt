@@ -4,15 +4,8 @@ enable_language(CUDA)
 set(CMAKE_CXX_COMPILER "/usr/bin/g++-6")
 set(CMAKE_CXX_STANDARD 14)
 set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda-9.0")
-find_package(OpenMP)
 
 
-#if (OPENMP_FOUND)
-#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-#    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-#    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS} -DNDEBUG")
-#    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-#endif ()
 find_package(CUDA REQUIRED)
 
 include_directories(src)

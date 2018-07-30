@@ -38,7 +38,7 @@ public:
     explicit tracer(config *conf);
 	void trace();
 
-    void meta_trace(scene &scene);
+    void meta_trace(scene &scene, bool clean = false);
 
 };
 #endif

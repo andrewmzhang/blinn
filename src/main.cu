@@ -41,7 +41,8 @@ int main() {
     scene s = sys.move(conf);
     for (int i = 0; i < conf.get_end_frame(); i++) {
         if (i >= conf.get_start_frame())
-            t.meta_trace(s);
+            t.meta_trace(s, i == (conf.get_end_frame() - 1));
+		s = sys.move(conf);
     }
 
 

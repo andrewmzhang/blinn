@@ -28,7 +28,7 @@ private:
 	int g;
 	int b;
 
-
+	
 	std::string int_to_five_digit_string(int frame_number);
 	void write_bmp_header_file(std::ofstream& output_file, int px, int pz);
 	void write_bmp_file(int f_number, std::string output_file_name, unsigned char ***output_buffer, int px, int pz);
@@ -38,6 +38,8 @@ public:
 	unsigned char ***frame;
 
 	render(const int h = 0, const int w = 0);
+
+	void set_frame(int*, int);
 
 	void render_frame() const;
 

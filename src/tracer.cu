@@ -26,6 +26,22 @@ tracer::tracer(config *conf) {
 
 }
 
+struct gcolor {
+	int R;
+	int G;
+	int B;
+};
+
+struct gsphere {
+
+	double radius;
+	double k;
+
+	point center;
+	gcolor c;
+
+	bool meta;
+};
 
 struct gpoint {
 
@@ -57,7 +73,7 @@ gpoint normalize(gpoint& a) {
 
 
 __device__
-bool intersection(sphere& s, gray& r, double* t, double* u) {
+bool intersection(gsphere& s, gray& r, double* t, double* u) {
 
 	gpoint L = {s.center.x - r.pt.x, s.center.y - r.pt.y, s.center.z - r.pt.z};
 
@@ -85,6 +101,7 @@ bool intersection(sphere& s, gray& r, double* t, double* u) {
 	}
 
 	*t = t0;
+	*u = t1;
 
 	return true;
 
@@ -94,18 +111,18 @@ bool intersection(sphere& s, gray& r, double* t, double* u) {
 
 
 __device__
-double meta_sec(sphere* spheres, sphere* b_spheres, int num_spheres, 
+double meta_sec(gsphere* spheres, gsphere* b_spheres, int num_spheres, 
 		gray bullet, 
-		uint32_t i, uint32_t j, 
+		int i, int j, 
 		double &meta) {
 
     // Determine intersection
-    double t_s = 1.0/0.0;
+    double t_s = 9999999999;
     double t_temp = t_s;
 
-    double t1_s = -1.0/0.0;
+    double t1_s = -9999999;
     double t1_temp = t1_s;
-    geometry *closest = nullptr;
+    gsphere *closest = nullptr;
     for (int s = 0; s < num_spheres; s++) {
         if (intersection(b_spheres[s], bullet, &t_temp, &t1_temp)) {
             if (t_temp < t_s)
@@ -123,7 +140,7 @@ double meta_sec(sphere* spheres, sphere* b_spheres, int num_spheres,
     while (dist < t1_s) {
         double meta_value = 0.0;
         for (int i = 0; i < num_spheres; i++)  {
-			sphere& sp = spheres[i];
+			gsphere& sp = spheres[i];
 			
 			double x = bullet.pt.x + (dist * bullet.vec.x);
 			double y = bullet.pt.y + (dist * bullet.vec.y);
@@ -151,7 +168,7 @@ double meta_sec(sphere* spheres, sphere* b_spheres, int num_spheres,
 }
 
 __device__
-double meta_value(sphere& sp, double x, double y, double z) {
+double meta_value(gsphere& sp, double x, double y, double z) {
 
 	double radius = sp.radius;
 
@@ -162,7 +179,7 @@ double meta_value(sphere& sp, double x, double y, double z) {
 	return sp_meta;
 }
 __device__
-thrust::tuple<double, double, double> approx_norm(double bx, double by, double bz, sphere* spheres, int num_spheres) {
+thrust::tuple<double, double, double> approx_norm(double bx, double by, double bz, gsphere* spheres, int num_spheres) {
     double d = 0.000000001;
     double tmp = 0.0;
 
@@ -219,23 +236,31 @@ gpoint inch_by(gray b, double x) {
 
 __global__
 void gpu_meta_trace(
-		sphere* spheres, int num_spheres,
-		point light, double li,
-		sphere* b_spheres, int num_b_spheres, 
-		point* centers, render& r,
-		int length) {
+		gsphere* spheres, int num_spheres,
+		
+		gpoint light, double li,
+		
+		gsphere* b_spheres, int num_b_spheres, 
+		
+		gpoint* centers,
+		int length,
+		int* r) {
 
-    for (int iter = 0; iter < length * length; iter++) {
+	int index = blockIdx.x * blockDim.x + threadIdx.x;
+	int stride = blockDim.x * gridDim.x;
+
+
+    for (int iter = index; iter < length * length; iter += stride) {
 
         int i = iter / length;
         int j = iter % length;
 		
         //color background(0);
-		int backgroundR = 0;
-		int backgroundG = 0;
-		int backgroundB = 0;
+		int backgroundR = 125;
+		int backgroundG = 125;
+		int backgroundB = 125;
         gpoint camera = {.5, .5, -5};
-        point center = centers[iter];
+        gpoint center = centers[iter];
 		gpoint vec = {center.x - camera.x, center.y - camera.y, center.z - camera.z};
 
 
@@ -264,7 +289,7 @@ void gpu_meta_trace(
 			double mixB = 0;
 
             for (int i = 0; i < num_spheres; i++) {
-				sphere& sp = spheres[i];
+				gsphere& sp = spheres[i];
 				double x = bullet_loc.x;
 				double y = bullet_loc.y;
 				double z = bullet_loc.z;
@@ -288,11 +313,23 @@ void gpu_meta_trace(
 			backgroundB = mixB * percent;
         }
 
-		int x = centers[iter].x;
-		int y = centers[iter].y;
-		r.frame[x][y][0] = backgroundR;
-		r.frame[x][y][1] = backgroundG;
-		r.frame[x][y][2] = backgroundB;
+		double x = centers[iter].x;
+		double y = centers[iter].y;
+
+
+		int point_x = (int) round(x * (length - 1));
+		int point_y = (int) round(y * (length - 1));
+
+		int set = point_x*length*3 + point_y*3;
+
+		r[set + 0] = backgroundR;
+		r[set + 1] = backgroundG;
+		r[set + 2] = backgroundB;
+
+
+		//r.frame[x][y][0] = backgroundR;
+		//r.frame[x][y][1] = backgroundG;
+		//r.frame[x][y][2] = backgroundB;
         
 	}
 
@@ -300,14 +337,15 @@ void gpu_meta_trace(
 }
 
 
-void tracer::meta_trace(scene &scene) {
+void tracer::meta_trace(scene &scene, bool clean) {
 
     this->count = scene.get_count();
 
     num_spheres = scene.get_spheres().size();
     spheres = scene.get_spheres();
 
-    point light = scene.get_light();
+    point n_light = scene.get_light();
+	gpoint light = {n_light.x, n_light.y, n_light.z};
     double li = scene.get_li();
 
     render r(this->length, this->length);
@@ -334,55 +372,69 @@ void tracer::meta_trace(scene &scene) {
 		centers_flat[iter] = (&ptrs[0])[i][j].get_center();
 	}
 
-	sphere* gpu_spheres;
-	sphere* gpu_b_spheres;
-	point* gpu_centers;
+	static gsphere* gpu_spheres;
+	static gsphere* gpu_b_spheres;
+	static gpoint* gpu_centers;
+	static int* the_frame;
+	static bool first = 0;
 
-	std::cout << num_spheres<< " " << sizeof(sphere) <<  std::endl;
-
-
-	cudaDeviceSynchronize();
-	cudaMallocManaged(&gpu_spheres, num_spheres*sizeof(sphere));
-	cudaMallocManaged(&gpu_b_spheres, num_spheres * sizeof(sphere));
-	cudaMallocManaged(&gpu_centers, (length * length) * sizeof(point));
-	cudaDeviceSynchronize();
-	std::cout << spheres.data() << std::endl;
-	
+	if (!first) {
+		cudaMallocManaged(&gpu_spheres, num_spheres*sizeof(gsphere));
+		cudaMallocManaged(&gpu_b_spheres, num_spheres * sizeof(gsphere));
+		cudaMallocManaged(&gpu_centers, (length * length) * sizeof(gpoint));
+		cudaMallocManaged(&the_frame, (length * length * 3) * sizeof(int));
+		first = true;
+	}
+		
 	for (int i = 0; i < num_spheres; i++) {
-		sphere s = spheres[i];
-		std::cout << s.radius << std::endl;
-		gpu_spheres[i] = s;
+		sphere s = spheres.at(i);
+		gpu_spheres[i].radius = s.radius;
+		gpu_spheres[i].k = s.k;
+		gpu_spheres[i].center = s.center;
+		gpu_spheres[i].c = {s.c.R, s.c.G, s.c.B};
+		gpu_spheres[i].meta = s.meta;
 	}
 	
-	std::memcpy(gpu_b_spheres, b_spheres.data(), num_spheres * sizeof(sphere));
-	std::memcpy(gpu_centers, centers_flat, (length * length) * sizeof(point));
-	cudaDeviceSynchronize();
+	for (int i = 0; i < num_spheres; i++) {
+		sphere s = b_spheres.at(i);
+		gpu_b_spheres[i].radius = s.radius;
+		gpu_b_spheres[i].k = s.k;
+		gpu_b_spheres[i].center = s.center;
+		gpu_b_spheres[i].c= {s.c.R, s.c.G, s.c.B};
+		gpu_b_spheres[i].meta = s.meta;
+	}
 	
-	gpu_meta_trace<<<1, 1>>>(
+	for (int i = 0; i < length * length; i++) {
+		point& p = centers_flat[i];
+		gpu_centers[i] = {p.x, p.y, p.z};
+	}
+
+	delete[] centers_flat;
+	int numBlocks = ((length*length) + 256 - 1) / 256;
+	gpu_meta_trace<<<numBlocks, 256>>>(
 		gpu_spheres, num_spheres,
 		light, li,
-		gpu_b_spheres, b_spheres.size(), 
-		gpu_centers, r, length);
+		gpu_b_spheres, num_spheres, 
+		gpu_centers, length, the_frame);
 
 	cudaDeviceSynchronize();
-
-
     auto end = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch()).count();
     double time = ((double) (end - start)) / 1000.0;
-    fflush(stderr);
     log_info("Time elapsed: %.3fs, %.3f px/sec", time, length * length / time);
-    fflush(stderr);
 
-    r.print(count, "hello.bmp");
-	
-	delete[] centers_flat;
-	cudaFree(gpu_spheres);
-	cudaFree(gpu_b_spheres);
-	cudaFree(gpu_centers);
-	cudaDeviceSynchronize();
+	r.set_frame(the_frame, length);
+	r.print(count, "hello.bmp");
+
+	if (clean) {	
+		cudaFree(gpu_spheres);
+		cudaFree(gpu_b_spheres);
+		cudaFree(gpu_centers);
+		cudaFree(the_frame);
+	}
 	log_info("Finished frame");
     count++;
+	log_info("%d", count);
 }
 
 
