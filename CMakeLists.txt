@@ -5,10 +5,12 @@ set(CMAKE_CXX_COMPILER "/usr/bin/g++-6")
 set(CMAKE_CXX_STANDARD 14)
 set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda-9.0")
 
+find_package(PNG REQUIRED)
+include_directories(${PNG_INCLUDE_DIRS})
 
 find_package(CUDA REQUIRED)
 
-include_directories(src)
+include_directories(src src/png++-0.2.9)
 
 # define unit tests
 find_package(Boost COMPONENTS system filesystem unit_test_framework REQUIRED)
@@ -22,7 +24,6 @@ target_link_libraries(UnitTests
                       )
 enable_testing()
 ADD_TEST (basic_test UnitTests)
-
 
 
 # define exec
@@ -55,5 +56,6 @@ add_executable(blinn
         src/scene.h
         src/Computation.cu
         src/Computation.cuh
+		${LIBPNG_LINK_FLAGS}
         )
-set_property(TARGET blinn PROPERTY CUDA_STANDARD 14)
+	set_property(TARGET blinn PROPERTY CUDA_STANDARD 14)

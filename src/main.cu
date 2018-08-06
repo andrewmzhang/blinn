@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 
+#include <png.hpp>
 
 #include "dbg.h"
 #include "sphere.h"
