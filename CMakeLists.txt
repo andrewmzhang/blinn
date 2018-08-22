@@ -10,18 +10,19 @@ include_directories(${PNG_INCLUDE_DIRS})
 
 find_package(CUDA REQUIRED)
 
-include_directories(src src/png++-0.2.9)
+include_directories(src src/png++)
 
 # define unit tests
 find_package(Boost COMPONENTS system filesystem unit_test_framework REQUIRED)
 add_executable(UnitTests
-    src/test.cpp
-        src/Computation.cu src/Computation.cuh)
+	src/test.cpp
+	src/Computation.cu src/Computation.cuh)
+
 target_link_libraries(UnitTests
-                      ${Boost_FILESYSTEM_LIBRARY}
-                      ${Boost_SYSTEM_LIBRARY}
-                      ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-                      )
+	${Boost_FILESYSTEM_LIBRARY}
+	${Boost_SYSTEM_LIBRARY}
+	${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+	)
 enable_testing()
 ADD_TEST (basic_test UnitTests)
 
@@ -29,33 +30,37 @@ ADD_TEST (basic_test UnitTests)
 # define exec
 #cuda_add_executable(blinn src/main.cu)
 
+
 add_executable(blinn
-        src/color.cu
-        src/color.cuh
-        src/dbg.h
-        src/geometry.cpp
-        src/geometry.h
-        src/main.cu
-        src/point.cpp
-        src/ray.h
-        src/ray.cpp
-        src/point.h
-        src/render.cpp
-        src/render.h
-        src/sphere.cpp
-        src/sphere.h
-        src/square.cpp
-        src/square.h
-        src/blobsys.cpp
-        src/blobsys.h
-        src/tracer.cu
-        src/tracer.h
-        src/config.cpp
-        src/config.h
-        src/scene.cpp
-        src/scene.h
-        src/Computation.cu
-        src/Computation.cuh
-		${LIBPNG_LINK_FLAGS}
-        )
-	set_property(TARGET blinn PROPERTY CUDA_STANDARD 14)
+	src/color.cu
+	src/color.cuh
+	src/dbg.h
+	src/geometry.cpp
+	src/geometry.h
+	src/main.cu
+	src/point.cpp
+	src/ray.h
+	src/ray.cpp
+	src/point.h
+	src/render.cpp
+	src/render.h
+	src/sphere.cpp
+	src/sphere.h
+	src/square.cpp
+	src/square.h
+	src/blobsys.cpp
+	src/blobsys.h
+	src/tracer.cu
+	src/tracer.h
+	src/config.cpp
+	src/config.h
+	src/scene.cpp
+	src/scene.h
+	src/Computation.cu
+	src/Computation.cuh
+	${LIBPNG_LINK_FLAGS}
+	)
+target_link_libraries(blinn
+	  ${PNG_LIBRARIES}
+	)
+set_property(TARGET blinn PROPERTY CUDA_STANDARD 14)

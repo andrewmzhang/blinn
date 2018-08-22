@@ -256,9 +256,9 @@ void gpu_meta_trace(
         int j = iter % length;
 		
         //color background(0);
-		int backgroundR = 125;
-		int backgroundG = 125;
-		int backgroundB = 125;
+		int backgroundR = 0;
+		int backgroundG = 0;
+		int backgroundB = 0;
         gpoint camera = {.5, .5, -5};
         gpoint center = centers[iter];
 		gpoint vec = {center.x - camera.x, center.y - camera.y, center.z - camera.z};
@@ -424,7 +424,7 @@ void tracer::meta_trace(scene &scene, bool clean) {
     log_info("Time elapsed: %.3fs, %.3f px/sec", time, length * length / time);
 
 	r.set_frame(the_frame, length);
-	r.print(count, "hello.bmp");
+	r.print(count, "hello.png");
 
 	if (clean) {	
 		cudaFree(gpu_spheres);

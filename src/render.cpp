@@ -4,6 +4,8 @@
 #include "render.h"
 #include "dbg.h"
 
+#include <png++/png.hpp>
+
 using namespace std;
 
 
@@ -216,7 +218,24 @@ void render::test() {
 
 void render::print(int num, string str) {
 
-    this->write_bmp_file(num, std::move(str), this->frame, this->height, this->width);
+	// Writes BMP to file
+    //this->write_bmp_file(num, std::move(str), this->frame, this->height, this->width);
+	
+	png::image<png::rgb_pixel> image(this->height, this->width);
+
+	for (int i = 0; i < this->height; i++) {
+		for (int j = 0; j < this->width; j++) {
+			image[i][j] = png::rgb_pixel(
+					this->frame[i][j][0], 
+					this->frame[i][j][1], 
+					this->frame[i][j][2]);
+
+
+		}
+	}
+
+	string o_file_name = int_to_five_digit_string(num) + str;
+	image.write(o_file_name);
 
 }
 
