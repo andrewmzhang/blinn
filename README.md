@@ -8,7 +8,7 @@ Renders metaballs and spheres using ray marching and raytracing, respectively. M
 
 To create an interesting animation, metaballs are connected to each other with springs with various k values. We let the physics dictate the movement of the metaballs (each with a mass of 1kg) between frames. See video below:
 
-[![Metaball Minute Youtube Video](https://img.youtube.com/vi/dfxTMVnEfB0/0.jpg)](https://www.youtube.com/watch?v=dfxTMVnEfB0)
+![Metaball Gif](examples/out500.gif)
 
 
 
