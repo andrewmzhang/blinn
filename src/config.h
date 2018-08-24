@@ -5,10 +5,11 @@
 #ifndef BLINN_CONFIG_H
 #define BLINN_CONFIG_H
 
-
+#include <stdint.h>
+#include <tuple>
 #include <string>
 #include <vector>
-#include "color.h"
+#include "color.cuh"
 #include "sphere.h"
 
 class config {
@@ -39,6 +40,8 @@ public:
 
     std::pair<point, double> get_light() const;
 
+    bool get_gpu() const;
+
 
 
 
@@ -61,7 +64,7 @@ private:
 
     std::pair<point, double> light;
 
-
+    bool gpu;
 };
 
 

@@ -3,12 +3,11 @@
 
 class point {
 
-private:
+
+public:
     double x;
     double y;
     double z;
-
-public:
     
     point();
     point(double x, double y, double z) : x(x), y(y), z(z) {};

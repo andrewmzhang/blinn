@@ -5,20 +5,23 @@
 #include "point.h"
 #include "ray.h"
 #include "geometry.h"
-#include "color.h"
+#include "color.cuh"
 
 class sphere: public geometry {
 
 protected:
-    std::shared_ptr<point> center;
-    double radius;
-	std::shared_ptr<color> c;
-    double k;
 
-    bool meta;
 
 
 public:
+    bool meta;
+    
+	double radius;
+    double k;
+
+    
+	point center;
+	color c;
 
     point get_center();
 

@@ -1,8 +1,10 @@
-#include "color.h"
+#include "color.cuh"
 #include <cmath>
 #include <iostream>
 #include "render.h"
 #include "dbg.h"
+
+#include <png++/png.hpp>
 
 using namespace std;
 
@@ -26,6 +28,49 @@ render::render(const int h, const int w) {
 
 }
 
+/*
+render::render(const int h, const int w, unsigned char* in, int count) {
+
+    this->height = h;
+    this->width = w;
+
+    this->frame = new unsigned char **[h];
+
+    for (int i = 0; i < h; i++) {
+        this->frame[i] = new unsigned char *[w];
+        for (int j = 0; j < w; j++) {
+            this->frame[i][j] = new unsigned char[3];
+            for (int k = 0; k < 3; k++)
+                this->frame[i][j][k] = 0;
+        }
+    }
+
+
+}
+*/
+
+void render::set_frame(int* the_frame, int length) {
+
+	int i = 0;
+	int iter = 0;
+	while (i < length * length * 3) {
+		int index = i;
+
+		int r = the_frame[index];
+		r = min(max(r, 0), 255);
+		int g = the_frame[index + 1];
+		g = min(max(g, 0), 255);
+		int b = the_frame[index + 2];
+		b = min(max(b, 0), 255);
+
+		this->frame[iter / length][iter % length][0] = r;
+		this->frame[iter / length][iter % length][1] = g;
+		this->frame[iter / length][iter % length][2] = b;
+		iter += 1;
+		i += 3;
+	}
+
+}
 
 void render::render_frame() const {
 
@@ -173,7 +218,24 @@ void render::test() {
 
 void render::print(int num, string str) {
 
-    this->write_bmp_file(num, std::move(str), this->frame, this->height, this->width);
+	// Writes BMP to file
+    //this->write_bmp_file(num, std::move(str), this->frame, this->height, this->width);
+	
+	png::image<png::rgb_pixel> image(this->height, this->width);
+
+	for (int i = 0; i < this->height; i++) {
+		for (int j = 0; j < this->width; j++) {
+			image[i][j] = png::rgb_pixel(
+					this->frame[i][j][0], 
+					this->frame[i][j][1], 
+					this->frame[i][j][2]);
+
+
+		}
+	}
+
+	string o_file_name = int_to_five_digit_string(num) + str;
+	image.write(o_file_name);
 
 }
 

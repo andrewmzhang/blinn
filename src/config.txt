@@ -1,12 +1,16 @@
-num_spheres: 3
+num_spheres: 4
 sphere: .4 .4 1.00 .15 125 0 0
 sphere: .7 .6 1.25 0.1 0 125 0
 sphere: .1 .5 0.77 .2  0 0 125
-num_frames: 10 13
-interval: 1
-background: 125 125 125
-size: 500 500
-light: 0.5 0.5 0.5 50
-spring: 0 1 .7
+sphere: .9 .25 0.10 .3  255 255 255
+num_frames: 0 1800
+interval: 0.033
+background: 0 0 0
+size: 1080 1080
+light: -0.5 -0.5 -0.5 50
+spring: 0 1 .2
 spring: 0 2 .3
+spring: 0 3 .1
 spring: 1 2 .5
+spring: 1 3 .7
+spring: 2 3 .3

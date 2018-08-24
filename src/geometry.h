@@ -2,7 +2,7 @@
 #define __geometry_h__
 
 #include "ray.h"
-#include "color.h"
+#include "color.cuh"
 #include "point.h"
 
 class geometry {

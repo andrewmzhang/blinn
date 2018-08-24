@@ -6,9 +6,6 @@
 class color {
 
 private:
-	int R;
-	int G;
-	int B;
 
 	std::string str;
 
@@ -17,7 +14,12 @@ private:
 
 
 public:
+	
+	int R;
+	int G;
+	int B;
 
+	color(int k);
 	color(const int R = 0, const int G = 0, const int B = 0);
 
 	int r() const;
